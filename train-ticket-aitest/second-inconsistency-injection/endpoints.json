@@ -17,8 +17,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -26,9 +26,10 @@
       "methodName" : "createAccount",
       "description" : "create account",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -79,8 +80,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -88,9 +89,10 @@
       "methodName" : "update",
       "description" : "update",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -141,8 +143,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -152,7 +154,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -200,9 +202,10 @@
       "methodName" : "queryAccount",
       "description" : "query account",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -253,8 +256,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -264,7 +267,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -314,7 +317,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -362,9 +365,10 @@
       "methodName" : "queryPayment",
       "description" : "query payment",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -415,8 +419,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -424,16 +428,17 @@
       "methodName" : "modifyConfig",
       "description" : "modify config",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -471,9 +476,10 @@
       "methodName" : "getAllUser",
       "description" : "get all user",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -521,8 +527,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -532,17 +538,17 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
-        "requiresAuthentication" : true,
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
         "source" : "yaml",
-        "public" : false
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -582,7 +588,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -632,7 +638,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -683,8 +689,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -694,7 +700,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -743,8 +749,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -754,9 +760,10 @@
       "methodName" : "findContactsByAccountId",
       "description" : "find contacts by account id",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -807,8 +814,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -818,7 +825,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -869,8 +876,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -878,9 +885,10 @@
       "methodName" : "pay",
       "description" : "pay",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -929,8 +937,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -942,7 +950,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -993,8 +1001,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -1004,7 +1012,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1052,9 +1060,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1104,8 +1113,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : false,
         "requestParam" : true,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "requestBodyDetail" : null,
@@ -1166,8 +1175,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -1175,9 +1184,10 @@
       "methodName" : "createTrip",
       "description" : "create trip",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1226,8 +1236,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -1239,7 +1249,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1288,8 +1298,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "assuranceId",
@@ -1300,8 +1310,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "orderId",
@@ -1312,8 +1322,8 @@
         "position" : 3,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -1323,9 +1333,10 @@
       "methodName" : "modifyAssurance",
       "description" : "modify assurance",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1375,17 +1386,16 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
-        "requiresAuthentication" : true,
-        "source" : "yaml",
-        "public" : false
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
+        "source" : "default",
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -1423,9 +1433,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1475,7 +1486,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1526,8 +1537,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -1537,7 +1548,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1588,8 +1599,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -1599,7 +1610,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1649,7 +1660,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1699,7 +1710,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1748,8 +1759,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -1761,7 +1772,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1810,8 +1821,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "orderId",
@@ -1822,8 +1833,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -1833,9 +1844,10 @@
       "methodName" : "cancelTicket",
       "description" : "cancel ticket",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1886,8 +1898,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -1895,9 +1907,10 @@
       "methodName" : "addRoute",
       "description" : "add route",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -1948,8 +1961,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -1957,16 +1970,17 @@
       "methodName" : "modifyContacts",
       "description" : "modify contacts",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -2007,8 +2021,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -2016,9 +2030,10 @@
       "methodName" : "create",
       "description" : "create",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2069,8 +2084,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -2080,7 +2095,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2131,8 +2146,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -2142,7 +2157,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2191,8 +2206,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -2204,7 +2219,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2253,8 +2268,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "orderId",
@@ -2265,8 +2280,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -2276,9 +2291,10 @@
       "methodName" : "createNewAssurance",
       "description" : "create new assurance",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2327,8 +2343,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -2340,7 +2356,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2388,9 +2404,10 @@
       "methodName" : "getWaitListOrders",
       "description" : "get wait list orders",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2439,8 +2456,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -2452,7 +2469,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2501,8 +2518,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -2512,9 +2529,9 @@
       "methodName" : "queryById",
       "description" : "query by id",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2565,8 +2582,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -2574,9 +2591,10 @@
       "methodName" : "createNewOrder",
       "description" : "create new order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2627,8 +2645,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -2638,7 +2656,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2686,9 +2704,10 @@
       "methodName" : "getAllAssuranceType",
       "description" : "get all assurance type",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2738,7 +2757,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2789,8 +2808,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -2800,7 +2819,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2851,8 +2870,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -2860,9 +2879,10 @@
       "methodName" : "create",
       "description" : "create",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2911,8 +2931,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "orderId",
@@ -2923,8 +2943,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -2936,7 +2956,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -2984,9 +3004,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3037,8 +3058,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -3046,9 +3067,10 @@
       "methodName" : "update",
       "description" : "update",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3096,9 +3118,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3146,16 +3169,16 @@
       "methodName" : "query",
       "description" : "query",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiredRoles" : [ ],
         "requiresAuthentication" : true,
         "source" : "yaml",
         "public" : false
@@ -3196,9 +3219,10 @@
       "methodName" : "getPriceConfig",
       "description" : "get price config",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3249,8 +3273,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -3260,7 +3284,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3311,8 +3335,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -3320,9 +3344,10 @@
       "methodName" : "updateConfig",
       "description" : "update config",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3371,8 +3396,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -3384,7 +3409,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3433,8 +3458,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -3444,9 +3469,10 @@
       "methodName" : "executeTicket",
       "description" : "execute ticket",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3497,8 +3523,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -3506,9 +3532,10 @@
       "methodName" : "updateTravel",
       "description" : "update travel",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3556,9 +3583,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3606,9 +3634,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3659,8 +3688,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -3670,7 +3699,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3718,9 +3747,10 @@
       "methodName" : "getPriceInfo",
       "description" : "get price info",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3771,8 +3801,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -3780,9 +3810,10 @@
       "methodName" : "modifyPriceConfig",
       "description" : "modify price config",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3832,7 +3863,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3882,7 +3913,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3933,8 +3964,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -3942,9 +3973,10 @@
       "methodName" : "addcreateNewOrder",
       "description" : "addcreate new order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -3993,8 +4025,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -4004,9 +4036,10 @@
       "methodName" : "getAssuranceById",
       "description" : "get assurance by id",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4057,8 +4090,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -4068,7 +4101,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4119,8 +4152,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -4130,7 +4163,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4181,8 +4214,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -4192,7 +4225,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4243,8 +4276,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -4254,7 +4287,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4302,9 +4335,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4354,17 +4388,17 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
-        "requiresAuthentication" : true,
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
         "source" : "yaml",
-        "public" : false
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -4405,8 +4439,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -4414,9 +4448,10 @@
       "methodName" : "addcreateNewOrder",
       "description" : "addcreate new order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4464,9 +4499,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4515,8 +4551,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -4526,19 +4562,20 @@
       "methodName" : "deleteRoute",
       "description" : "delete route",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -4579,8 +4616,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -4590,7 +4627,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4639,8 +4676,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -4650,9 +4687,10 @@
       "methodName" : "findByConsignee",
       "description" : "find by consignee",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4701,8 +4739,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -4712,9 +4750,9 @@
       "methodName" : "delete",
       "description" : "delete",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4812,8 +4850,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -4825,7 +4863,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4875,7 +4913,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4926,8 +4964,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -4937,7 +4975,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -4987,7 +5025,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5038,8 +5076,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -5047,9 +5085,10 @@
       "methodName" : "preserve",
       "description" : "preserve",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5098,8 +5137,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -5111,7 +5150,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5160,8 +5199,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -5171,9 +5210,10 @@
       "methodName" : "delete",
       "description" : "delete",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5224,8 +5264,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -5233,16 +5273,17 @@
       "methodName" : "modifyPrice",
       "description" : "modify price",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -5282,7 +5323,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5332,8 +5373,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : false,
         "requestParam" : true,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "requestBodyDetail" : null,
@@ -5394,8 +5435,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -5403,9 +5444,10 @@
       "methodName" : "updateOrder",
       "description" : "update order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5455,7 +5497,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5504,8 +5546,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -5517,7 +5559,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5566,8 +5608,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "checkDate",
@@ -5578,8 +5620,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -5591,7 +5633,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5642,8 +5684,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -5653,7 +5695,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5704,8 +5746,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -5715,7 +5757,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5766,8 +5808,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -5775,9 +5817,10 @@
       "methodName" : "updateOrder",
       "description" : "update order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5826,8 +5869,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -5837,19 +5880,20 @@
       "methodName" : "deleteUserById",
       "description" : "delete user by id",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -5889,7 +5933,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -5937,8 +5981,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -5948,7 +5992,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -5997,8 +6041,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -6008,9 +6052,10 @@
       "methodName" : "deletePrice",
       "description" : "delete price",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -6058,8 +6103,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -6067,9 +6112,10 @@
       "methodName" : "saveOrderInfo",
       "description" : "save order info",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -6120,8 +6166,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -6131,7 +6177,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -6181,7 +6227,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -6232,8 +6278,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -6241,16 +6287,17 @@
       "methodName" : "addConfig",
       "description" : "add config",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -6289,8 +6336,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -6302,7 +6349,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -6353,8 +6400,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -6362,9 +6409,10 @@
       "methodName" : "updateConsign",
       "description" : "update consign",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -6413,8 +6461,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -6426,7 +6474,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -6476,7 +6524,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -6527,8 +6575,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -6538,7 +6586,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -6587,8 +6635,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -6598,19 +6646,20 @@
       "methodName" : "deleteConfig",
       "description" : "delete config",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -6649,8 +6698,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "checkDate",
@@ -6661,8 +6710,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -6674,7 +6723,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -6725,8 +6774,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -6734,9 +6783,10 @@
       "methodName" : "addMoney",
       "description" : "add money",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -6786,17 +6836,17 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
-        "requiresAuthentication" : true,
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
         "source" : "yaml",
-        "public" : false
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -6835,8 +6885,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -6846,9 +6896,10 @@
       "methodName" : "deleteUser",
       "description" : "delete user",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -6899,8 +6950,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -6910,7 +6961,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -6959,8 +7010,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -6970,9 +7021,10 @@
       "methodName" : "deleteStation",
       "description" : "delete station",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -7020,8 +7072,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -7031,7 +7083,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -7081,7 +7133,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -7129,8 +7181,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -7138,9 +7190,10 @@
       "methodName" : "createNewOrder",
       "description" : "create new order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -7190,7 +7243,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -7239,8 +7292,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -7250,9 +7303,10 @@
       "methodName" : "check",
       "description" : "check",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -7300,9 +7354,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -7353,8 +7408,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -7362,9 +7417,10 @@
       "methodName" : "update",
       "description" : "update",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -7412,9 +7468,10 @@
       "methodName" : "queryAddMoney",
       "description" : "query add money",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -7463,8 +7520,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -7476,7 +7533,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -7524,9 +7581,10 @@
       "methodName" : "getAllAssurances",
       "description" : "get all assurances",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -7576,7 +7634,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -7623,17 +7681,17 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
-        "requiresAuthentication" : true,
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
         "source" : "yaml",
-        "public" : false
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -7674,8 +7732,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -7683,16 +7741,17 @@
       "methodName" : "modifyTrain",
       "description" : "modify train",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -7733,8 +7792,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -7744,7 +7803,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -7790,8 +7849,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -7801,9 +7860,9 @@
       "methodName" : "queryForStationId",
       "description" : "query for station id",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -7852,8 +7911,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "startStation",
@@ -7864,8 +7923,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "tripId",
@@ -7876,8 +7935,8 @@
         "position" : 3,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "date",
@@ -7888,8 +7947,8 @@
         "position" : 4,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -7901,7 +7960,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -7952,8 +8011,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -7963,7 +8022,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -8014,8 +8073,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -8025,7 +8084,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -8076,8 +8135,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -8087,17 +8146,16 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
-        "requiresAuthentication" : true,
-        "source" : "yaml",
-        "public" : false
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
+        "source" : "default",
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -8136,8 +8194,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -8147,19 +8205,20 @@
       "methodName" : "deleteTrip",
       "description" : "delete trip",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -8198,8 +8257,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -8211,7 +8270,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -8260,8 +8319,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -8273,7 +8332,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -8321,9 +8380,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -8420,8 +8480,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -8429,9 +8489,10 @@
       "methodName" : "payDifference",
       "description" : "pay difference",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -8482,8 +8543,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -8491,9 +8552,10 @@
       "methodName" : "rebook",
       "description" : "rebook",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -8542,8 +8604,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -8553,15 +8615,16 @@
       "methodName" : "deleteUserById",
       "description" : "delete user by id",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
+        "required" : true,
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
         "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
-        "source" : "default",
-        "public" : true
+        "requiresAuthentication" : true,
+        "source" : "yaml",
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -8602,8 +8665,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -8613,7 +8676,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -8661,8 +8724,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -8670,16 +8733,17 @@
       "methodName" : "addContacts",
       "description" : "add contacts",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -8719,7 +8783,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -8768,8 +8832,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -8781,7 +8845,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -8832,8 +8896,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -8843,7 +8907,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -8894,8 +8958,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -8905,7 +8969,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -8954,8 +9018,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "money",
@@ -8966,8 +9030,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -8977,9 +9041,10 @@
       "methodName" : "drawBack",
       "description" : "draw back",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9028,8 +9093,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "money",
@@ -9040,8 +9105,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -9051,9 +9116,10 @@
       "methodName" : "addMoney",
       "description" : "add money",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9103,7 +9169,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9151,9 +9217,10 @@
       "methodName" : "query",
       "description" : "query",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9204,8 +9271,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -9213,9 +9280,9 @@
       "methodName" : "queryForIdBatch",
       "description" : "query for id batch",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9266,8 +9333,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -9275,16 +9342,17 @@
       "methodName" : "addPrice",
       "description" : "add price",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -9325,8 +9393,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -9334,9 +9402,10 @@
       "methodName" : "createNewContacts",
       "description" : "create new contacts",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9385,8 +9454,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "weight",
@@ -9397,8 +9466,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -9408,9 +9477,10 @@
       "methodName" : "getPriceByWeightAndRegion",
       "description" : "get price by weight and region",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9458,9 +9528,9 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9511,8 +9581,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -9520,9 +9590,10 @@
       "methodName" : "addOrder",
       "description" : "add order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9571,8 +9642,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -9584,7 +9655,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9634,17 +9705,16 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
-        "requiresAuthentication" : true,
-        "source" : "yaml",
-        "public" : false
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
+        "source" : "default",
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -9683,8 +9753,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -9696,7 +9766,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9744,9 +9814,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9795,8 +9866,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "orderId",
@@ -9807,8 +9878,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -9818,9 +9889,10 @@
       "methodName" : "deleteOrder",
       "description" : "delete order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9871,8 +9943,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -9880,16 +9952,17 @@
       "methodName" : "addStation",
       "description" : "add station",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -9928,8 +10001,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -9941,7 +10014,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -9989,9 +10062,10 @@
       "methodName" : "getAllOrders",
       "description" : "get all orders",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10042,8 +10116,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -10051,9 +10125,10 @@
       "methodName" : "update",
       "description" : "update",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10101,9 +10176,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10154,8 +10230,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -10163,9 +10239,10 @@
       "methodName" : "insertConsign",
       "description" : "insert consign",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10215,7 +10292,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -10262,7 +10339,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10310,9 +10387,10 @@
       "methodName" : "getAllContacts",
       "description" : "get all contacts",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10360,9 +10438,10 @@
       "methodName" : "getAllRoutes",
       "description" : "get all routes",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10411,8 +10490,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "routeId",
@@ -10423,8 +10502,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -10436,7 +10515,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10485,8 +10564,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -10496,9 +10575,10 @@
       "methodName" : "findAssuranceByOrderId",
       "description" : "find assurance by order id",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10548,7 +10628,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10596,9 +10676,10 @@
       "methodName" : "getAllTravels",
       "description" : "get all travels",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10648,17 +10729,17 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
-        "requiresAuthentication" : true,
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
         "source" : "yaml",
-        "public" : false
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -10699,8 +10780,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -10710,7 +10791,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10759,8 +10840,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "end",
@@ -10771,8 +10852,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -10784,7 +10865,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10833,8 +10914,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -10844,9 +10925,10 @@
       "methodName" : "calculate",
       "description" : "calculate",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10897,8 +10979,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -10906,9 +10988,10 @@
       "methodName" : "updateOrder",
       "description" : "update order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -10957,8 +11040,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -10970,7 +11053,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -11020,7 +11103,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -11065,9 +11148,10 @@
       "methodName" : "getAllOrders",
       "description" : "get all orders",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -11116,8 +11200,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -11129,7 +11213,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -11179,7 +11263,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -11227,8 +11311,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -11238,17 +11322,16 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
-        "requiresAuthentication" : true,
-        "source" : "yaml",
-        "public" : false
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
+        "source" : "default",
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -11289,8 +11372,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -11298,9 +11381,10 @@
       "methodName" : "create",
       "description" : "create",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -11349,8 +11433,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -11360,9 +11444,10 @@
       "methodName" : "findByAccountId",
       "description" : "find by account id",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -11462,8 +11547,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -11473,7 +11558,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -11522,8 +11607,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -11533,9 +11618,10 @@
       "methodName" : "deleteTrain",
       "description" : "delete train",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -11583,8 +11669,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -11592,9 +11678,10 @@
       "methodName" : "createNewOrder",
       "description" : "create new order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -11645,8 +11732,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -11656,7 +11743,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -11705,8 +11792,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -11716,19 +11803,20 @@
       "methodName" : "deleteFoodOrder",
       "description" : "delete food order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -11769,8 +11857,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -11778,9 +11866,10 @@
       "methodName" : "createAndModifyRoute",
       "description" : "create and modify route",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -11829,8 +11918,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -11842,7 +11931,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -11890,9 +11979,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -11937,9 +12027,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -11988,8 +12079,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -12001,7 +12092,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -12050,8 +12141,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -12061,9 +12152,10 @@
       "methodName" : "collectTicket",
       "description" : "collect ticket",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -12114,8 +12206,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -12123,16 +12215,17 @@
       "methodName" : "addTrain",
       "description" : "add train",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -12173,8 +12266,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -12182,16 +12275,16 @@
       "methodName" : "createFoodOrder",
       "description" : "create food order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiredRoles" : [ ],
         "requiresAuthentication" : true,
         "source" : "yaml",
         "public" : false
@@ -12235,8 +12328,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -12246,7 +12339,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -12297,8 +12390,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -12306,9 +12399,10 @@
       "methodName" : "modifyContacts",
       "description" : "modify contacts",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -12358,7 +12452,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -12407,8 +12501,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -12420,7 +12514,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -12469,8 +12563,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -12482,7 +12576,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -12531,8 +12625,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -12544,7 +12638,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -12595,8 +12689,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -12604,9 +12698,9 @@
       "methodName" : "queryForNameBatch",
       "description" : "query for name batch",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -12654,9 +12748,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -12706,17 +12801,17 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
-        "requiresAuthentication" : true,
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
         "source" : "yaml",
-        "public" : false
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -12757,8 +12852,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -12766,16 +12861,17 @@
       "methodName" : "updateTrip",
       "description" : "update trip",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiredRoles" : [ "ROLE_USER" ],
         "requiresAuthentication" : true,
         "source" : "yaml",
         "public" : false
@@ -12819,8 +12915,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -12830,7 +12926,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -12881,8 +12977,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -12890,9 +12986,10 @@
       "methodName" : "pay",
       "description" : "pay",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -12943,8 +13040,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -12954,7 +13051,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -13004,7 +13101,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -13055,8 +13152,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -13064,9 +13161,10 @@
       "methodName" : "create",
       "description" : "create",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -13117,8 +13215,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -13126,9 +13224,10 @@
       "methodName" : "payDifference",
       "description" : "pay difference",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -13177,8 +13276,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -13188,9 +13287,10 @@
       "methodName" : "deleteAssuranceByOrderId",
       "description" : "delete assurance by order id",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -13241,8 +13341,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -13250,9 +13350,10 @@
       "methodName" : "updateTrip",
       "description" : "update trip",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -13303,8 +13404,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -13312,9 +13413,10 @@
       "methodName" : "saveOrderInfo",
       "description" : "save order info",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -13365,8 +13467,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -13376,7 +13478,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -13427,8 +13529,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -13438,17 +13540,16 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
-        "requiresAuthentication" : true,
-        "source" : "yaml",
-        "public" : false
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
+        "source" : "default",
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -13487,8 +13588,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -13498,19 +13599,20 @@
       "methodName" : "delete",
       "description" : "delete",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -13549,8 +13651,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -13560,9 +13662,10 @@
       "methodName" : "deleteConfig",
       "description" : "delete config",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -13608,8 +13711,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -13619,9 +13722,10 @@
       "methodName" : "getContactsByContactsId",
       "description" : "get contacts by contacts id",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -13671,17 +13775,17 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
-        "requiresAuthentication" : true,
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
         "source" : "yaml",
-        "public" : false
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -13721,7 +13825,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -13772,8 +13876,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -13781,16 +13885,17 @@
       "methodName" : "createConfig",
       "description" : "create config",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiredRoles" : [ "ROLE_USER" ],
         "requiresAuthentication" : true,
         "source" : "yaml",
         "public" : false
@@ -13832,8 +13937,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -13845,7 +13950,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -13895,17 +14000,16 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
-        "requiresAuthentication" : true,
-        "source" : "yaml",
-        "public" : false
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
+        "source" : "default",
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -13944,8 +14048,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -13955,9 +14059,10 @@
       "methodName" : "deleteContacts",
       "description" : "delete contacts",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14007,17 +14112,16 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
-        "requiresAuthentication" : true,
-        "source" : "yaml",
-        "public" : false
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
+        "source" : "default",
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -14057,17 +14161,17 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ "ROLE_ADMIN" ],
-        "requiresAuthentication" : true,
+        "requiredRoles" : [ ],
+        "requiresAuthentication" : false,
         "source" : "yaml",
-        "public" : false
+        "public" : true
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -14106,8 +14210,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -14117,9 +14221,10 @@
       "methodName" : "deleteTravel",
       "description" : "delete travel",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14169,7 +14274,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14219,7 +14324,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14270,8 +14375,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -14281,7 +14386,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14332,8 +14437,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -14341,9 +14446,10 @@
       "methodName" : "addTravel",
       "description" : "add travel",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14394,8 +14500,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -14403,16 +14509,17 @@
       "methodName" : "modifyStation",
       "description" : "modify station",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
-        "requiredRoles" : [ ],
-        "requiresAuthentication" : false,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "requiresAuthentication" : true,
         "source" : "yaml",
-        "public" : true
+        "public" : false
       },
       "responseSchema" : {
         "statusCodes" : {
@@ -14450,9 +14557,10 @@
       "methodName" : "home",
       "description" : "home",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14501,8 +14609,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -14512,9 +14620,10 @@
       "methodName" : "deleteRoute",
       "description" : "delete route",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14563,8 +14672,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -14576,7 +14685,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14625,8 +14734,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -14636,9 +14745,10 @@
       "methodName" : "deleteContacts",
       "description" : "delete contacts",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "optionalAuthentication" : false
       },
       "authorization" : {
@@ -14685,7 +14795,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14734,8 +14844,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -14745,9 +14855,10 @@
       "methodName" : "findByOrderId",
       "description" : "find by order id",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14796,8 +14907,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "orderId",
@@ -14808,8 +14919,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -14821,7 +14932,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14870,8 +14981,8 @@
         "position" : 0,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       }, {
         "name" : "travelDate",
@@ -14882,8 +14993,8 @@
         "position" : 2,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -14895,7 +15006,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -14946,8 +15057,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -14955,9 +15066,10 @@
       "methodName" : "updateFoodOrder",
       "description" : "update food order",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -15006,8 +15118,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -15019,7 +15131,7 @@
       "authentication" : {
         "required" : false,
         "permitAll" : true,
-        "source" : "SecurityConfig",
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -15067,9 +15179,10 @@
       "methodName" : "findAllSecurityConfig",
       "description" : "find all security config",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -15118,8 +15231,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : true,
-        "requestBody" : false,
         "requestParam" : false,
+        "requestBody" : false,
         "requestHeader" : false
       } ],
       "queryParameterDetails" : [ ],
@@ -15129,9 +15242,10 @@
       "methodName" : "deleteAssurance",
       "description" : "delete assurance",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -15182,8 +15296,8 @@
         "position" : 1,
         "validationConstraints" : [ ],
         "pathVariable" : false,
-        "requestBody" : true,
         "requestParam" : false,
+        "requestBody" : true,
         "requestHeader" : false
       },
       "responseType" : "",
@@ -15191,9 +15305,10 @@
       "methodName" : "createNewContactsAdmin",
       "description" : "create new contacts admin",
       "authentication" : {
-        "required" : false,
-        "permitAll" : true,
-        "source" : "SecurityConfig",
+        "required" : true,
+        "requiredRoles" : [ "ROLE_ADMIN", "ROLE_USER" ],
+        "permitAll" : false,
+        "source" : "yaml",
         "mechanism" : {
           "type" : "NONE"
         },
@@ -15231,7 +15346,7 @@
   "metadata" : {
     "systemName" : "train-ticket-aitest",
     "commitId" : "c0e46f2a5adfcae82ee79f0f981bb61a5c378274",
-    "indexedAt" : "2025-12-09T21:05:33.916848Z",
+    "indexedAt" : "2025-12-18T02:49:32.552510Z",
     "totalComponents" : 259,
     "componentCounts" : {
       "endpoints" : 259,
