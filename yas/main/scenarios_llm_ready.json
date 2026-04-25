@@ -31,6 +31,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -139,6 +140,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PII_RESTRICTED",
     "authorization": {
@@ -226,11 +228,13 @@
     "allowed_roles": [
       "ADMIN"
     ],
-    "denied_roles": [],
+    "denied_roles": [
+      "CUSTOMER"
+    ],
     "unknown_roles": [],
     "expected_status_by_role": {
       "ADMIN": "2xx",
-      "CUSTOMER": "2xx"
+      "CUSTOMER": "403"
     },
     "chain_permissions": {
       "rating:3c41ba5e3ce668ae095bfdfde0453c1c": {
@@ -290,28 +294,19 @@
         "role": "CUSTOMER",
         "type": "UnderPermissiveDownstream",
         "details": {
-          "upstream_endpoint": "order:a7ae70b2afdaa463c0a10eb9815b0941",
+          "upstream_endpoint": "rating:3c41ba5e3ce668ae095bfdfde0453c1c",
           "downstream_endpoint": "product:04689cbd6cefb080cfab1c79994708e8",
           "upstream_value": 1,
           "downstream_value": 0
-        }
-      },
-      {
-        "role": "CUSTOMER",
-        "type": "OverPermissiveDownstream",
-        "details": {
-          "upstream_endpoint": "product:04689cbd6cefb080cfab1c79994708e8",
-          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
-          "upstream_value": 0,
-          "downstream_value": 1
         }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
-    "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_PUBLIC",
+    "scenario_category": "DOWNSTREAM_UNDER_PERMISSIVE_PUBLIC_PUBLIC",
     "authorization": {
       "required_roles": [
         "ADMIN"
@@ -365,7 +360,7 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PUBLIC",
-      "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_PUBLIC",
+      "scenario_category": "DOWNSTREAM_UNDER_PERMISSIVE_PUBLIC_PUBLIC",
       "template_id": "downstream_inconsistency_cot",
       "parameters": {
         "scenario_id": "scn_rating:3c41ba5e3ce668ae095bfdfde0453c1c",
@@ -379,20 +374,10 @@
             "role": "CUSTOMER",
             "type": "UnderPermissiveDownstream",
             "details": {
-              "upstream_endpoint": "order:a7ae70b2afdaa463c0a10eb9815b0941",
+              "upstream_endpoint": "rating:3c41ba5e3ce668ae095bfdfde0453c1c",
               "downstream_endpoint": "product:04689cbd6cefb080cfab1c79994708e8",
               "upstream_value": 1,
               "downstream_value": 0
-            }
-          },
-          {
-            "role": "CUSTOMER",
-            "type": "OverPermissiveDownstream",
-            "details": {
-              "upstream_endpoint": "product:04689cbd6cefb080cfab1c79994708e8",
-              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
-              "upstream_value": 0,
-              "downstream_value": 1
             }
           }
         ],
@@ -439,6 +424,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -555,10 +541,41 @@
     },
     "max_depth": 1,
     "total_calls": 3,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
-    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
+    "policy_inconsistencies": [
+      {
+        "role": "CUSTOMER",
+        "type": "UnresolvedDownstream",
+        "details": {
+          "boundary_endpoint": "inventory:be291c4561c47c0a79e3b07bbaa489d3",
+          "unresolved_endpoints": [
+            "UNRESOLVED:UNKNOWN",
+            "UNRESOLVED:UNKNOWN"
+          ],
+          "boundary_value": 0,
+          "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "CUSTOMER"
+    ],
+    "unresolved_boundary": {
+      "boundary_endpoint": "inventory:be291c4561c47c0a79e3b07bbaa489d3",
+      "unresolved_endpoints": [
+        "UNRESOLVED:UNKNOWN",
+        "UNRESOLVED:UNKNOWN"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ADMIN"
+      ],
+      "roles_unresolvable": [
+        "CUSTOMER"
+      ],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
+    "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
+    "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PUBLIC_RESTRICTED",
     "authorization": {
       "required_roles": [
         "ADMIN"
@@ -618,7 +635,7 @@
     "data_awareness_level": "HIGH",
     "llm_prompt_type": "CHAIN_OF_THOUGHT",
     "sensitivity_type": "PUBLIC",
-    "prompt_template_id": "downstream_consistent_path",
+    "prompt_template_id": "downstream_inconsistency_cot",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -628,8 +645,8 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PUBLIC",
-      "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
-      "template_id": "downstream_consistent_path",
+      "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PUBLIC_RESTRICTED",
+      "template_id": "downstream_inconsistency_cot",
       "parameters": {
         "scenario_id": "scn_inventory:be291c4561c47c0a79e3b07bbaa489d3",
         "service_name": "inventory",
@@ -637,8 +654,23 @@
         "method": "DELETE",
         "max_depth": 1,
         "total_calls": 3,
-        "allowed_roles": [
-          "ADMIN"
+        "policy_inconsistencies": [
+          {
+            "role": "CUSTOMER",
+            "type": "UnresolvedDownstream",
+            "details": {
+              "boundary_endpoint": "inventory:be291c4561c47c0a79e3b07bbaa489d3",
+              "unresolved_endpoints": [
+                "UNRESOLVED:UNKNOWN",
+                "UNRESOLVED:UNKNOWN"
+              ],
+              "boundary_value": 0,
+              "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+            }
+          }
+        ],
+        "policy_inconsistency_roles": [
+          "CUSTOMER"
         ]
       }
     },
@@ -680,6 +712,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -817,6 +850,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -924,6 +958,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -1048,6 +1083,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -1196,6 +1232,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -1345,11 +1382,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "tax:187927623269f25b50c2a9443845d969",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -1421,6 +1469,16 @@
             "details": {
               "upstream_endpoint": "tax:187927623269f25b50c2a9443845d969",
               "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "tax:187927623269f25b50c2a9443845d969",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
               "upstream_value": 0,
               "downstream_value": 1
             }
@@ -1513,8 +1571,28 @@
         "role": "CUSTOMER",
         "type": "OverPermissiveDownstream",
         "details": {
-          "upstream_endpoint": "product:22a278f769b485999db7216d656fd239",
+          "upstream_endpoint": "inventory:cc95286c40ed5555f8668d7b9809e500",
           "downstream_endpoint": "product:c12aca012decb6059f27fcfc9018a691",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "inventory:cc95286c40ed5555f8668d7b9809e500",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "inventory:cc95286c40ed5555f8668d7b9809e500",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
           "upstream_value": 0,
           "downstream_value": 1
         }
@@ -1523,6 +1601,19 @@
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {
+      "boundary_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+      "unresolved_endpoints": [
+        "UNRESOLVED:UNKNOWN"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ADMIN",
+        "CUSTOMER"
+      ],
+      "roles_unresolvable": [],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -1592,8 +1683,28 @@
             "role": "CUSTOMER",
             "type": "OverPermissiveDownstream",
             "details": {
-              "upstream_endpoint": "product:22a278f769b485999db7216d656fd239",
+              "upstream_endpoint": "inventory:cc95286c40ed5555f8668d7b9809e500",
               "downstream_endpoint": "product:c12aca012decb6059f27fcfc9018a691",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "inventory:cc95286c40ed5555f8668d7b9809e500",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "inventory:cc95286c40ed5555f8668d7b9809e500",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
               "upstream_value": 0,
               "downstream_value": 1
             }
@@ -1642,6 +1753,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -1800,11 +1912,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:0fafead7da9a451934824b3369d1abc9",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:0fafead7da9a451934824b3369d1abc9",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -1879,6 +2012,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:0fafead7da9a451934824b3369d1abc9",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:0fafead7da9a451934824b3369d1abc9",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -1924,6 +2077,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -2091,11 +2245,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "location:082c7f75c11936d0399981bcc119cdf0",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -2186,6 +2351,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "location:082c7f75c11936d0399981bcc119cdf0",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -2231,6 +2406,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -2355,6 +2531,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -2481,6 +2658,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -2607,6 +2785,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -2717,6 +2896,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -2864,6 +3044,7 @@
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -3015,11 +3196,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "rating:aba2e7b6e58b11af3e02d76e0e079ff0",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "rating:aba2e7b6e58b11af3e02d76e0e079ff0",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -3209,6 +3411,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "rating:aba2e7b6e58b11af3e02d76e0e079ff0",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "rating:aba2e7b6e58b11af3e02d76e0e079ff0",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -3276,6 +3498,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -3418,6 +3641,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -3528,6 +3752,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -3638,6 +3863,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -3748,6 +3974,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -3882,11 +4109,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:04689cbd6cefb080cfab1c79994708e8",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -3977,6 +4215,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:04689cbd6cefb080cfab1c79994708e8",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -4020,6 +4268,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -4155,6 +4404,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -4295,6 +4545,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -4403,6 +4654,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -4529,6 +4781,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -4672,6 +4925,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PII_RESTRICTED",
     "authorization": {
@@ -4796,6 +5050,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -4912,6 +5167,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -5070,6 +5326,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -5228,11 +5485,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:891f7372f75cf921e47bd147182f89e3",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:891f7372f75cf921e47bd147182f89e3",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -5340,6 +5618,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:891f7372f75cf921e47bd147182f89e3",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:891f7372f75cf921e47bd147182f89e3",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -5385,6 +5683,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -5495,6 +5794,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -5653,11 +5953,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:ee123204f3b94ef0f2bfa2898f9e2540",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:ee123204f3b94ef0f2bfa2898f9e2540",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -5765,6 +6086,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:ee123204f3b94ef0f2bfa2898f9e2540",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:ee123204f3b94ef0f2bfa2898f9e2540",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -5832,6 +6173,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -5990,6 +6332,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -6131,6 +6474,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -6247,10 +6591,41 @@
     },
     "max_depth": 1,
     "total_calls": 3,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
-    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
+    "policy_inconsistencies": [
+      {
+        "role": "CUSTOMER",
+        "type": "UnresolvedDownstream",
+        "details": {
+          "boundary_endpoint": "inventory:a7140db3373eaebfad3d6d94ddc9b912",
+          "unresolved_endpoints": [
+            "UNRESOLVED:UNKNOWN",
+            "UNRESOLVED:UNKNOWN"
+          ],
+          "boundary_value": 0,
+          "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "CUSTOMER"
+    ],
+    "unresolved_boundary": {
+      "boundary_endpoint": "inventory:a7140db3373eaebfad3d6d94ddc9b912",
+      "unresolved_endpoints": [
+        "UNRESOLVED:UNKNOWN",
+        "UNRESOLVED:UNKNOWN"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ADMIN"
+      ],
+      "roles_unresolvable": [
+        "CUSTOMER"
+      ],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
+    "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
+    "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PUBLIC_RESTRICTED",
     "authorization": {
       "required_roles": [
         "ADMIN"
@@ -6310,7 +6685,7 @@
     "data_awareness_level": "HIGH",
     "llm_prompt_type": "CHAIN_OF_THOUGHT",
     "sensitivity_type": "PUBLIC",
-    "prompt_template_id": "downstream_consistent_path",
+    "prompt_template_id": "downstream_inconsistency_cot",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -6320,8 +6695,8 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PUBLIC",
-      "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
-      "template_id": "downstream_consistent_path",
+      "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PUBLIC_RESTRICTED",
+      "template_id": "downstream_inconsistency_cot",
       "parameters": {
         "scenario_id": "scn_inventory:a7140db3373eaebfad3d6d94ddc9b912",
         "service_name": "inventory",
@@ -6329,8 +6704,23 @@
         "method": "PUT",
         "max_depth": 1,
         "total_calls": 3,
-        "allowed_roles": [
-          "ADMIN"
+        "policy_inconsistencies": [
+          {
+            "role": "CUSTOMER",
+            "type": "UnresolvedDownstream",
+            "details": {
+              "boundary_endpoint": "inventory:a7140db3373eaebfad3d6d94ddc9b912",
+              "unresolved_endpoints": [
+                "UNRESOLVED:UNKNOWN",
+                "UNRESOLVED:UNKNOWN"
+              ],
+              "boundary_value": 0,
+              "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+            }
+          }
+        ],
+        "policy_inconsistency_roles": [
+          "CUSTOMER"
         ]
       }
     },
@@ -6394,6 +6784,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -6534,6 +6925,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -6660,6 +7052,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -6799,6 +7192,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -6907,6 +7301,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -7054,7 +7449,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -7145,7 +7543,9 @@
             }
           }
         ],
-        "policy_inconsistency_roles": []
+        "policy_inconsistency_roles": [
+          "PUBLIC"
+        ]
       }
     },
     "handles_pii": false,
@@ -7184,6 +7584,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -7307,7 +7708,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -7382,7 +7786,9 @@
             }
           }
         ],
-        "policy_inconsistency_roles": []
+        "policy_inconsistency_roles": [
+          "PUBLIC"
+        ]
       }
     },
     "handles_pii": false,
@@ -7423,6 +7829,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -7533,6 +7940,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -7643,6 +8051,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -7769,6 +8178,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -7895,6 +8305,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -8021,6 +8432,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -8191,18 +8603,29 @@
       },
       {
         "role": "CUSTOMER",
-        "type": "UnderPermissiveDownstream",
+        "type": "OverPermissiveDownstream",
         "details": {
-          "upstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
-          "downstream_endpoint": "product:011a60577b3e6b8fc8f1909f5f691d4a",
-          "upstream_value": 1,
-          "downstream_value": 0
+          "upstream_endpoint": "inventory:9025f0b615ebac7b85f233b958c61f43",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "inventory:9025f0b615ebac7b85f233b958c61f43",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
         }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -8280,12 +8703,22 @@
           },
           {
             "role": "CUSTOMER",
-            "type": "UnderPermissiveDownstream",
+            "type": "OverPermissiveDownstream",
             "details": {
-              "upstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
-              "downstream_endpoint": "product:011a60577b3e6b8fc8f1909f5f691d4a",
-              "upstream_value": 1,
-              "downstream_value": 0
+              "upstream_endpoint": "inventory:9025f0b615ebac7b85f233b958c61f43",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "inventory:9025f0b615ebac7b85f233b958c61f43",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
             }
           }
         ],
@@ -8344,10 +8777,22 @@
     },
     "max_depth": 1,
     "total_calls": 3,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
-    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
+    "policy_inconsistencies": [
+      {
+        "role": "PUBLIC",
+        "type": "PolicyExposure",
+        "details": {
+          "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
+          "endpoint": "payment:b6224b0f0b8685e70a3ba99d1f9ba060"
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
+    "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
+    "scenario_category": "DOWNSTREAM_POLICY_EXPOSURE_PUBLIC_PUBLIC",
     "authorization": {
       "required_roles": [
         "ADMIN",
@@ -8392,7 +8837,7 @@
     "data_awareness_level": "HIGH",
     "llm_prompt_type": "CHAIN_OF_THOUGHT",
     "sensitivity_type": "PUBLIC",
-    "prompt_template_id": "downstream_consistent_path",
+    "prompt_template_id": "downstream_inconsistency_cot",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -8402,8 +8847,8 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PUBLIC",
-      "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
-      "template_id": "downstream_consistent_path",
+      "scenario_category": "DOWNSTREAM_POLICY_EXPOSURE_PUBLIC_PUBLIC",
+      "template_id": "downstream_inconsistency_cot",
       "parameters": {
         "scenario_id": "scn_payment:b6224b0f0b8685e70a3ba99d1f9ba060",
         "service_name": "payment",
@@ -8411,9 +8856,18 @@
         "method": "POST",
         "max_depth": 1,
         "total_calls": 3,
-        "allowed_roles": [
-          "ADMIN",
-          "CUSTOMER"
+        "policy_inconsistencies": [
+          {
+            "role": "PUBLIC",
+            "type": "PolicyExposure",
+            "details": {
+              "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
+              "endpoint": "payment:b6224b0f0b8685e70a3ba99d1f9ba060"
+            }
+          }
+        ],
+        "policy_inconsistency_roles": [
+          "PUBLIC"
         ]
       }
     },
@@ -8499,18 +8953,29 @@
       },
       {
         "role": "CUSTOMER",
-        "type": "UnderPermissiveDownstream",
+        "type": "OverPermissiveDownstream",
         "details": {
-          "upstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
-          "downstream_endpoint": "product:3d25c1a5e49a8ea865541ca399fdea46",
-          "upstream_value": 1,
-          "downstream_value": 0
+          "upstream_endpoint": "inventory:b22289d9670cb371c28681baac4be69e",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "inventory:b22289d9670cb371c28681baac4be69e",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
         }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -8634,12 +9099,22 @@
           },
           {
             "role": "CUSTOMER",
-            "type": "UnderPermissiveDownstream",
+            "type": "OverPermissiveDownstream",
             "details": {
-              "upstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
-              "downstream_endpoint": "product:3d25c1a5e49a8ea865541ca399fdea46",
-              "upstream_value": 1,
-              "downstream_value": 0
+              "upstream_endpoint": "inventory:b22289d9670cb371c28681baac4be69e",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "inventory:b22289d9670cb371c28681baac4be69e",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
             }
           }
         ],
@@ -8686,6 +9161,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -8812,6 +9288,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -8944,10 +9421,41 @@
     },
     "max_depth": 1,
     "total_calls": 3,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
-    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "DOWNSTREAM_CONSISTENT_PII_RESTRICTED",
+    "policy_inconsistencies": [
+      {
+        "role": "CUSTOMER",
+        "type": "UnresolvedDownstream",
+        "details": {
+          "boundary_endpoint": "customer:5ca036f252eeda0933e62df550a31477",
+          "unresolved_endpoints": [
+            "UNRESOLVED:UNKNOWN",
+            "UNRESOLVED:UNKNOWN"
+          ],
+          "boundary_value": 0,
+          "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "CUSTOMER"
+    ],
+    "unresolved_boundary": {
+      "boundary_endpoint": "customer:5ca036f252eeda0933e62df550a31477",
+      "unresolved_endpoints": [
+        "UNRESOLVED:UNKNOWN",
+        "UNRESOLVED:UNKNOWN"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ADMIN"
+      ],
+      "roles_unresolvable": [
+        "CUSTOMER"
+      ],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
+    "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
+    "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PII_RESTRICTED",
     "authorization": {
       "required_roles": [
         "ADMIN"
@@ -9007,7 +9515,7 @@
     "data_awareness_level": "HIGH",
     "llm_prompt_type": "CHAIN_OF_THOUGHT",
     "sensitivity_type": "PII",
-    "prompt_template_id": "downstream_consistent_path",
+    "prompt_template_id": "downstream_inconsistency_cot",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -9017,8 +9525,8 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PII",
-      "scenario_category": "DOWNSTREAM_CONSISTENT_PII_RESTRICTED",
-      "template_id": "downstream_consistent_path",
+      "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PII_RESTRICTED",
+      "template_id": "downstream_inconsistency_cot",
       "parameters": {
         "scenario_id": "scn_customer:5ca036f252eeda0933e62df550a31477",
         "service_name": "customer",
@@ -9026,8 +9534,23 @@
         "method": "PUT",
         "max_depth": 1,
         "total_calls": 3,
-        "allowed_roles": [
-          "ADMIN"
+        "policy_inconsistencies": [
+          {
+            "role": "CUSTOMER",
+            "type": "UnresolvedDownstream",
+            "details": {
+              "boundary_endpoint": "customer:5ca036f252eeda0933e62df550a31477",
+              "unresolved_endpoints": [
+                "UNRESOLVED:UNKNOWN",
+                "UNRESOLVED:UNKNOWN"
+              ],
+              "boundary_value": 0,
+              "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+            }
+          }
+        ],
+        "policy_inconsistency_roles": [
+          "CUSTOMER"
         ]
       }
     },
@@ -9069,6 +9592,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -9185,6 +9709,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -9310,6 +9835,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -9509,11 +10035,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "location:4e400226cc9aea798fd59c03ba5deb16",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -9588,6 +10125,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "location:4e400226cc9aea798fd59c03ba5deb16",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -9631,6 +10178,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -9765,11 +10313,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "location:9bdb8413da7b7d742988898ef8ed48b2",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -9860,6 +10419,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "location:9bdb8413da7b7d742988898ef8ed48b2",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -9903,6 +10472,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -10029,6 +10599,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -10171,11 +10742,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:1ef5444989e01de09bc5f2e42ea09fa2",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:1ef5444989e01de09bc5f2e42ea09fa2",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -10299,6 +10891,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:1ef5444989e01de09bc5f2e42ea09fa2",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:1ef5444989e01de09bc5f2e42ea09fa2",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -10344,6 +10956,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -10515,6 +11128,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -10640,6 +11254,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -10771,7 +11386,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -10902,12 +11520,35 @@
         "role": "PUBLIC",
         "type": "PolicyExposure",
         "details": {
+          "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
+          "endpoint": "payment:06cd8850acd594321c4c7f15dc8e6187"
+        }
+      },
+      {
+        "role": "PUBLIC",
+        "type": "PolicyExposure",
+        "details": {
           "reason": "Sensitive endpoint marked as PUBLIC (-1)"
         }
       }
     ],
-    "policy_inconsistency_roles": [],
-    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {
+      "boundary_endpoint": "payment:06cd8850acd594321c4c7f15dc8e6187",
+      "unresolved_endpoints": [
+        "UNRESOLVED:UNKNOWN"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ADMIN",
+        "CUSTOMER"
+      ],
+      "roles_unresolvable": [],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
+    "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_POLICY_EXPOSURE_FINANCIAL_PUBLIC",
     "authorization": {
       "required_roles": [
@@ -10977,11 +11618,21 @@
             "role": "PUBLIC",
             "type": "PolicyExposure",
             "details": {
+              "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
+              "endpoint": "payment:06cd8850acd594321c4c7f15dc8e6187"
+            }
+          },
+          {
+            "role": "PUBLIC",
+            "type": "PolicyExposure",
+            "details": {
               "reason": "Sensitive endpoint marked as PUBLIC (-1)"
             }
           }
         ],
-        "policy_inconsistency_roles": []
+        "policy_inconsistency_roles": [
+          "PUBLIC"
+        ]
       }
     },
     "handles_pii": false,
@@ -11054,11 +11705,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:0e9fdb4a77e3efce7e557db005e6c148",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:0e9fdb4a77e3efce7e557db005e6c148",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -11149,6 +11821,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:0e9fdb4a77e3efce7e557db005e6c148",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:0e9fdb4a77e3efce7e557db005e6c148",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -11218,11 +11910,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:85b60df2d0ebf178b1cd803c0deafe73",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -11313,6 +12016,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:85b60df2d0ebf178b1cd803c0deafe73",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -11358,6 +12071,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -11527,6 +12241,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -11668,6 +12383,7 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -11793,6 +12509,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -11919,6 +12636,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -12027,6 +12745,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -12154,6 +12873,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -12269,7 +12989,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_FINANCIAL_PUBLIC",
     "authorization": {
@@ -12439,11 +13162,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:2780f77a89fe5e07fea615acde0ebc0d",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:2780f77a89fe5e07fea615acde0ebc0d",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -12551,6 +13295,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:2780f77a89fe5e07fea615acde0ebc0d",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:2780f77a89fe5e07fea615acde0ebc0d",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -12628,11 +13392,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "customer:4ef1fc85851346f6237cc483ade22446",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "customer:4ef1fc85851346f6237cc483ade22446",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -12723,6 +13508,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "customer:4ef1fc85851346f6237cc483ade22446",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "customer:4ef1fc85851346f6237cc483ade22446",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -12768,6 +13573,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -13049,11 +13855,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "tax:8217cb9c15ad429f965776960a6b0108",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -13144,6 +13961,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "tax:8217cb9c15ad429f965776960a6b0108",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -13203,6 +14030,7 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -13310,6 +14138,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -13434,6 +14263,7 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -13559,6 +14389,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -13685,6 +14516,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -13809,6 +14641,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -13941,6 +14774,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -14099,6 +14933,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -14249,11 +15084,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "tax:d133a2595a1bcbdf1711247d9f4f5b84",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -14344,6 +15190,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "tax:d133a2595a1bcbdf1711247d9f4f5b84",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -14389,6 +15245,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -14513,6 +15370,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -14661,6 +15519,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -14835,11 +15694,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:22a278f769b485999db7216d656fd239",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:22a278f769b485999db7216d656fd239",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -14930,6 +15810,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:22a278f769b485999db7216d656fd239",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:22a278f769b485999db7216d656fd239",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -14981,6 +15881,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -15152,6 +16053,7 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -15282,7 +16184,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -15444,11 +16349,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "rating:703876251996ed70a120d495bb783a15",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -15539,6 +16455,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "rating:703876251996ed70a120d495bb783a15",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -15582,6 +16508,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -15709,6 +16636,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -15867,6 +16795,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -16025,11 +16954,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:daa5e543ee24fbeedbf965a124430d7f",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:daa5e543ee24fbeedbf965a124430d7f",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -16137,6 +17087,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:daa5e543ee24fbeedbf965a124430d7f",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:daa5e543ee24fbeedbf965a124430d7f",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -16214,11 +17184,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "order:ec6d5caf097a5b60df3aa4cc6f106926",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "order:ec6d5caf097a5b60df3aa4cc6f106926",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -16403,6 +17394,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "order:ec6d5caf097a5b60df3aa4cc6f106926",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "order:ec6d5caf097a5b60df3aa4cc6f106926",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -16448,6 +17459,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -16571,7 +17583,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -16646,7 +17661,9 @@
             }
           }
         ],
-        "policy_inconsistency_roles": []
+        "policy_inconsistency_roles": [
+          "PUBLIC"
+        ]
       }
     },
     "handles_pii": false,
@@ -16664,11 +17681,13 @@
     "allowed_roles": [
       "ADMIN"
     ],
-    "denied_roles": [],
+    "denied_roles": [
+      "CUSTOMER"
+    ],
     "unknown_roles": [],
     "expected_status_by_role": {
       "ADMIN": "2xx",
-      "CUSTOMER": "2xx"
+      "CUSTOMER": "403"
     },
     "chain_permissions": {
       "order:4a8a498bf90923ae1675296aae2b0342": {
@@ -16721,19 +17740,9 @@
       },
       {
         "role": "CUSTOMER",
-        "type": "OverPermissiveDownstream",
-        "details": {
-          "upstream_endpoint": "product:caac0136bbbfd7f97c0abf191ebbc72f",
-          "downstream_endpoint": "cart:59a1f431be9002f7eb5bf50ba4744bd2",
-          "upstream_value": 0,
-          "downstream_value": 1
-        }
-      },
-      {
-        "role": "CUSTOMER",
         "type": "UnderPermissiveDownstream",
         "details": {
-          "upstream_endpoint": "cart:59a1f431be9002f7eb5bf50ba4744bd2",
+          "upstream_endpoint": "order:4a8a498bf90923ae1675296aae2b0342",
           "downstream_endpoint": "promotion:781b0eb45a9b52c16a80c87b66eea6a4",
           "upstream_value": 1,
           "downstream_value": 0
@@ -16743,8 +17752,9 @@
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
-    "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_PUBLIC",
+    "scenario_category": "DOWNSTREAM_UNDER_PERMISSIVE_PUBLIC_PUBLIC",
     "authorization": {
       "required_roles": [
         "ADMIN"
@@ -16798,7 +17808,7 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PUBLIC",
-      "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_PUBLIC",
+      "scenario_category": "DOWNSTREAM_UNDER_PERMISSIVE_PUBLIC_PUBLIC",
       "template_id": "downstream_inconsistency_cot",
       "parameters": {
         "scenario_id": "scn_order:4a8a498bf90923ae1675296aae2b0342",
@@ -16820,19 +17830,9 @@
           },
           {
             "role": "CUSTOMER",
-            "type": "OverPermissiveDownstream",
-            "details": {
-              "upstream_endpoint": "product:caac0136bbbfd7f97c0abf191ebbc72f",
-              "downstream_endpoint": "cart:59a1f431be9002f7eb5bf50ba4744bd2",
-              "upstream_value": 0,
-              "downstream_value": 1
-            }
-          },
-          {
-            "role": "CUSTOMER",
             "type": "UnderPermissiveDownstream",
             "details": {
-              "upstream_endpoint": "cart:59a1f431be9002f7eb5bf50ba4744bd2",
+              "upstream_endpoint": "order:4a8a498bf90923ae1675296aae2b0342",
               "downstream_endpoint": "promotion:781b0eb45a9b52c16a80c87b66eea6a4",
               "upstream_value": 1,
               "downstream_value": 0
@@ -16880,6 +17880,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -17019,7 +18020,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -17094,7 +18098,9 @@
             }
           }
         ],
-        "policy_inconsistency_roles": []
+        "policy_inconsistency_roles": [
+          "PUBLIC"
+        ]
       }
     },
     "handles_pii": false,
@@ -17135,6 +18141,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -17292,6 +18299,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -17440,6 +18448,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -17587,6 +18596,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -17860,11 +18870,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "webhook:b57e1b078d49b972927751d5a152bf40",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -17955,6 +18976,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "webhook:b57e1b078d49b972927751d5a152bf40",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -17998,6 +19029,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -18145,10 +19177,39 @@
     },
     "max_depth": 1,
     "total_calls": 2,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
-    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
+    "policy_inconsistencies": [
+      {
+        "role": "CUSTOMER",
+        "type": "UnresolvedDownstream",
+        "details": {
+          "boundary_endpoint": "inventory:921b9fca3f9e6d0f403aafb9948f5f1e",
+          "unresolved_endpoints": [
+            "UNRESOLVED:UNKNOWN"
+          ],
+          "boundary_value": 0,
+          "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "CUSTOMER"
+    ],
+    "unresolved_boundary": {
+      "boundary_endpoint": "inventory:921b9fca3f9e6d0f403aafb9948f5f1e",
+      "unresolved_endpoints": [
+        "UNRESOLVED:UNKNOWN"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ADMIN"
+      ],
+      "roles_unresolvable": [
+        "CUSTOMER"
+      ],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
+    "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
+    "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PUBLIC_RESTRICTED",
     "authorization": {
       "required_roles": [
         "ADMIN"
@@ -18208,7 +19269,7 @@
     "data_awareness_level": "HIGH",
     "llm_prompt_type": "CHAIN_OF_THOUGHT",
     "sensitivity_type": "PUBLIC",
-    "prompt_template_id": "downstream_consistent_path",
+    "prompt_template_id": "downstream_inconsistency_cot",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -18218,8 +19279,8 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PUBLIC",
-      "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
-      "template_id": "downstream_consistent_path",
+      "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PUBLIC_RESTRICTED",
+      "template_id": "downstream_inconsistency_cot",
       "parameters": {
         "scenario_id": "scn_inventory:921b9fca3f9e6d0f403aafb9948f5f1e",
         "service_name": "inventory",
@@ -18227,8 +19288,22 @@
         "method": "GET",
         "max_depth": 1,
         "total_calls": 2,
-        "allowed_roles": [
-          "ADMIN"
+        "policy_inconsistencies": [
+          {
+            "role": "CUSTOMER",
+            "type": "UnresolvedDownstream",
+            "details": {
+              "boundary_endpoint": "inventory:921b9fca3f9e6d0f403aafb9948f5f1e",
+              "unresolved_endpoints": [
+                "UNRESOLVED:UNKNOWN"
+              ],
+              "boundary_value": 0,
+              "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+            }
+          }
+        ],
+        "policy_inconsistency_roles": [
+          "CUSTOMER"
         ]
       }
     },
@@ -18314,18 +19389,29 @@
       },
       {
         "role": "CUSTOMER",
-        "type": "UnderPermissiveDownstream",
+        "type": "OverPermissiveDownstream",
         "details": {
-          "upstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
-          "downstream_endpoint": "product:3d25c1a5e49a8ea865541ca399fdea46",
-          "upstream_value": 1,
-          "downstream_value": 0
+          "upstream_endpoint": "inventory:939da8c082fb7fd70af3215503b1e822",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "inventory:939da8c082fb7fd70af3215503b1e822",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
         }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -18465,12 +19551,22 @@
           },
           {
             "role": "CUSTOMER",
-            "type": "UnderPermissiveDownstream",
+            "type": "OverPermissiveDownstream",
             "details": {
-              "upstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
-              "downstream_endpoint": "product:3d25c1a5e49a8ea865541ca399fdea46",
-              "upstream_value": 1,
-              "downstream_value": 0
+              "upstream_endpoint": "inventory:939da8c082fb7fd70af3215503b1e822",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "inventory:939da8c082fb7fd70af3215503b1e822",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
             }
           }
         ],
@@ -18494,11 +19590,13 @@
     "allowed_roles": [
       "ADMIN"
     ],
-    "denied_roles": [],
+    "denied_roles": [
+      "CUSTOMER"
+    ],
     "unknown_roles": [],
     "expected_status_by_role": {
       "ADMIN": "2xx",
-      "CUSTOMER": "2xx"
+      "CUSTOMER": "403"
     },
     "chain_permissions": {
       "promotion:a29c188d78e014ca696932be574f0bea": {
@@ -18549,11 +19647,32 @@
           "upstream_value": 1,
           "downstream_value": 0
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "UnderPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "promotion:a29c188d78e014ca696932be574f0bea",
+          "downstream_endpoint": "product:194f207d34b8c6dde4a29a03055de289",
+          "upstream_value": 1,
+          "downstream_value": 0
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "UnderPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "promotion:a29c188d78e014ca696932be574f0bea",
+          "downstream_endpoint": "product:f3fae19547200ad1026fcfe146a71cd8",
+          "upstream_value": 1,
+          "downstream_value": 0
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_UNDER_PERMISSIVE_PUBLIC_PUBLIC",
     "authorization": {
@@ -18628,6 +19747,26 @@
               "upstream_value": 1,
               "downstream_value": 0
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "UnderPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "promotion:a29c188d78e014ca696932be574f0bea",
+              "downstream_endpoint": "product:194f207d34b8c6dde4a29a03055de289",
+              "upstream_value": 1,
+              "downstream_value": 0
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "UnderPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "promotion:a29c188d78e014ca696932be574f0bea",
+              "downstream_endpoint": "product:f3fae19547200ad1026fcfe146a71cd8",
+              "upstream_value": 1,
+              "downstream_value": 0
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -18673,6 +19812,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -18799,6 +19939,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -18939,6 +20080,7 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -19062,6 +20204,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -19188,6 +20331,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -19314,6 +20458,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -19438,6 +20583,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -19548,6 +20694,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -19674,6 +20821,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -19800,6 +20948,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -19908,6 +21057,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -20049,6 +21199,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -20189,6 +21340,7 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -20296,6 +21448,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -20406,6 +21559,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -20538,6 +21692,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PII_RESTRICTED",
     "authorization": {
@@ -20647,6 +21802,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -20773,6 +21929,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -20897,6 +22054,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -21055,11 +22213,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:67751713cf0abcd9fe6c670b25a34023",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:67751713cf0abcd9fe6c670b25a34023",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -21134,6 +22313,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:67751713cf0abcd9fe6c670b25a34023",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:67751713cf0abcd9fe6c670b25a34023",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -21203,11 +22402,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "tax:7f5c5c25a74a1e86febfa1962a7b52ea",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -21298,6 +22508,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "tax:7f5c5c25a74a1e86febfa1962a7b52ea",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -21343,6 +22563,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -21475,6 +22696,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -21639,6 +22861,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -21762,6 +22985,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -21884,10 +23108,22 @@
     },
     "max_depth": 0,
     "total_calls": 1,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
-    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
+    "policy_inconsistencies": [
+      {
+        "role": "PUBLIC",
+        "type": "PolicyExposure",
+        "details": {
+          "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
+          "endpoint": "payment:943c6de8bc82da76a6f162f8c6173b3c"
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
+    "expected_outcome": "Detect and explain entry-point authorization or exposure issue",
+    "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PUBLIC_PUBLIC",
     "authorization": {
       "required_roles": [
         "ADMIN",
@@ -21932,7 +23168,7 @@
     "data_awareness_level": "LOW",
     "llm_prompt_type": "SIMPLE",
     "sensitivity_type": "PUBLIC",
-    "prompt_template_id": "entrypoint_status_matrix",
+    "prompt_template_id": "entrypoint_public_sensitive",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -21940,22 +23176,34 @@
       ],
       "prompt_type": "SIMPLE",
       "sensitivity": "PUBLIC",
-      "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
-      "template_id": "entrypoint_status_matrix",
+      "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PUBLIC_PUBLIC",
+      "template_id": "entrypoint_public_sensitive",
       "parameters": {
         "scenario_id": "scn_payment:943c6de8bc82da76a6f162f8c6173b3c",
         "endpoint": "/init",
         "method": "POST",
         "service_name": "payment",
-        "allowed_roles": [
-          "ADMIN",
-          "CUSTOMER"
-        ],
-        "denied_roles": [],
-        "expected_status_by_role": {
-          "ADMIN": "2xx",
-          "CUSTOMER": "2xx"
-        }
+        "sensitivity_type": "PUBLIC",
+        "authorization": {
+          "required_roles": [
+            "ADMIN",
+            "CUSTOMER"
+          ],
+          "source": "default",
+          "priority": null,
+          "scope_pattern": null,
+          "public": true
+        },
+        "policy_inconsistencies": [
+          {
+            "role": "PUBLIC",
+            "type": "PolicyExposure",
+            "details": {
+              "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
+              "endpoint": "payment:943c6de8bc82da76a6f162f8c6173b3c"
+            }
+          }
+        ]
       }
     },
     "handles_pii": false,
@@ -21996,6 +23244,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -22128,6 +23377,20 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {
+      "boundary_endpoint": "sampledata:5dbe9c3307d5f7958919038f770dd59f",
+      "unresolved_endpoints": [
+        "UNRESOLVED:UNKNOWN",
+        "UNRESOLVED:UNKNOWN"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ADMIN",
+        "CUSTOMER"
+      ],
+      "roles_unresolvable": [],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -22237,6 +23500,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -22347,6 +23611,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -22481,6 +23746,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -22607,6 +23873,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -22731,6 +23998,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -22857,6 +24125,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -22982,6 +24251,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -23106,6 +24376,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -23264,11 +24535,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:2c5836ed0d085977d58f15c9671e8699",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:2c5836ed0d085977d58f15c9671e8699",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -23376,6 +24668,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:2c5836ed0d085977d58f15c9671e8699",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:2c5836ed0d085977d58f15c9671e8699",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -23453,11 +24765,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:88319c749ad3073c34a14b501bfa3819",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "product:88319c749ad3073c34a14b501bfa3819",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -23548,6 +24881,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:88319c749ad3073c34a14b501bfa3819",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "product:88319c749ad3073c34a14b501bfa3819",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -23593,6 +24946,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -23725,10 +25079,41 @@
     },
     "max_depth": 1,
     "total_calls": 3,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
-    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "DOWNSTREAM_CONSISTENT_PII_RESTRICTED",
+    "policy_inconsistencies": [
+      {
+        "role": "CUSTOMER",
+        "type": "UnresolvedDownstream",
+        "details": {
+          "boundary_endpoint": "customer:8a0869920c5cde90c0cc7061f66ece96",
+          "unresolved_endpoints": [
+            "UNRESOLVED:UNKNOWN",
+            "UNRESOLVED:UNKNOWN"
+          ],
+          "boundary_value": 0,
+          "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "CUSTOMER"
+    ],
+    "unresolved_boundary": {
+      "boundary_endpoint": "customer:8a0869920c5cde90c0cc7061f66ece96",
+      "unresolved_endpoints": [
+        "UNRESOLVED:UNKNOWN",
+        "UNRESOLVED:UNKNOWN"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ADMIN"
+      ],
+      "roles_unresolvable": [
+        "CUSTOMER"
+      ],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
+    "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
+    "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PII_RESTRICTED",
     "authorization": {
       "required_roles": [
         "ADMIN"
@@ -23788,7 +25173,7 @@
     "data_awareness_level": "HIGH",
     "llm_prompt_type": "CHAIN_OF_THOUGHT",
     "sensitivity_type": "PII",
-    "prompt_template_id": "downstream_consistent_path",
+    "prompt_template_id": "downstream_inconsistency_cot",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -23798,8 +25183,8 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PII",
-      "scenario_category": "DOWNSTREAM_CONSISTENT_PII_RESTRICTED",
-      "template_id": "downstream_consistent_path",
+      "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PII_RESTRICTED",
+      "template_id": "downstream_inconsistency_cot",
       "parameters": {
         "scenario_id": "scn_customer:8a0869920c5cde90c0cc7061f66ece96",
         "service_name": "customer",
@@ -23807,8 +25192,23 @@
         "method": "DELETE",
         "max_depth": 1,
         "total_calls": 3,
-        "allowed_roles": [
-          "ADMIN"
+        "policy_inconsistencies": [
+          {
+            "role": "CUSTOMER",
+            "type": "UnresolvedDownstream",
+            "details": {
+              "boundary_endpoint": "customer:8a0869920c5cde90c0cc7061f66ece96",
+              "unresolved_endpoints": [
+                "UNRESOLVED:UNKNOWN",
+                "UNRESOLVED:UNKNOWN"
+              ],
+              "boundary_value": 0,
+              "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+            }
+          }
+        ],
+        "policy_inconsistency_roles": [
+          "CUSTOMER"
         ]
       }
     },
@@ -23850,6 +25250,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -24012,8 +25413,28 @@
         "role": "CUSTOMER",
         "type": "OverPermissiveDownstream",
         "details": {
-          "upstream_endpoint": "product:22a278f769b485999db7216d656fd239",
+          "upstream_endpoint": "inventory:b32415ad48c5aaa79ab72f88e445b6dc",
           "downstream_endpoint": "product:c12aca012decb6059f27fcfc9018a691",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "inventory:b32415ad48c5aaa79ab72f88e445b6dc",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "inventory:b32415ad48c5aaa79ab72f88e445b6dc",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
           "upstream_value": 0,
           "downstream_value": 1
         }
@@ -24022,6 +25443,7 @@
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -24122,8 +25544,28 @@
             "role": "CUSTOMER",
             "type": "OverPermissiveDownstream",
             "details": {
-              "upstream_endpoint": "product:22a278f769b485999db7216d656fd239",
+              "upstream_endpoint": "inventory:b32415ad48c5aaa79ab72f88e445b6dc",
               "downstream_endpoint": "product:c12aca012decb6059f27fcfc9018a691",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "inventory:b32415ad48c5aaa79ab72f88e445b6dc",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "inventory:b32415ad48c5aaa79ab72f88e445b6dc",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
               "upstream_value": 0,
               "downstream_value": 1
             }
@@ -24172,6 +25614,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -24298,6 +25741,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -24446,6 +25890,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -24652,6 +26097,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -24762,6 +26208,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -24933,6 +26380,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -25020,11 +26468,13 @@
     "allowed_roles": [
       "ADMIN"
     ],
-    "denied_roles": [],
+    "denied_roles": [
+      "CUSTOMER"
+    ],
     "unknown_roles": [],
     "expected_status_by_role": {
       "ADMIN": "2xx",
-      "CUSTOMER": "2xx"
+      "CUSTOMER": "403"
     },
     "chain_permissions": {
       "order:a7ae70b2afdaa463c0a10eb9815b0941": {
@@ -25073,23 +26523,14 @@
           "upstream_value": 1,
           "downstream_value": 0
         }
-      },
-      {
-        "role": "CUSTOMER",
-        "type": "OverPermissiveDownstream",
-        "details": {
-          "upstream_endpoint": "product:04689cbd6cefb080cfab1c79994708e8",
-          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
-          "upstream_value": 0,
-          "downstream_value": 1
-        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
-    "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_PUBLIC",
+    "scenario_category": "DOWNSTREAM_UNDER_PERMISSIVE_PUBLIC_PUBLIC",
     "authorization": {
       "required_roles": [
         "ADMIN"
@@ -25159,7 +26600,7 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PUBLIC",
-      "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_PUBLIC",
+      "scenario_category": "DOWNSTREAM_UNDER_PERMISSIVE_PUBLIC_PUBLIC",
       "template_id": "downstream_inconsistency_cot",
       "parameters": {
         "scenario_id": "scn_order:a7ae70b2afdaa463c0a10eb9815b0941",
@@ -25177,16 +26618,6 @@
               "downstream_endpoint": "product:04689cbd6cefb080cfab1c79994708e8",
               "upstream_value": 1,
               "downstream_value": 0
-            }
-          },
-          {
-            "role": "CUSTOMER",
-            "type": "OverPermissiveDownstream",
-            "details": {
-              "upstream_endpoint": "product:04689cbd6cefb080cfab1c79994708e8",
-              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
-              "upstream_value": 0,
-              "downstream_value": 1
             }
           }
         ],
@@ -25233,6 +26664,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -25375,11 +26807,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "customer:3d3a27b6b16ac2070d4d3b6e741ff826",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "customer:3d3a27b6b16ac2070d4d3b6e741ff826",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -25454,6 +26907,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "customer:3d3a27b6b16ac2070d4d3b6e741ff826",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "customer:3d3a27b6b16ac2070d4d3b6e741ff826",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -25495,10 +26968,22 @@
     },
     "max_depth": 0,
     "total_calls": 1,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
-    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
+    "policy_inconsistencies": [
+      {
+        "role": "PUBLIC",
+        "type": "PolicyExposure",
+        "details": {
+          "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
+          "endpoint": "payment:8ded4d5d19b504265dff07e2fcc2742f"
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
+    "expected_outcome": "Detect and explain entry-point authorization or exposure issue",
+    "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PUBLIC_PUBLIC",
     "authorization": {
       "required_roles": [
         "ADMIN",
@@ -25543,7 +27028,7 @@
     "data_awareness_level": "LOW",
     "llm_prompt_type": "SIMPLE",
     "sensitivity_type": "PUBLIC",
-    "prompt_template_id": "entrypoint_status_matrix",
+    "prompt_template_id": "entrypoint_public_sensitive",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -25551,22 +27036,34 @@
       ],
       "prompt_type": "SIMPLE",
       "sensitivity": "PUBLIC",
-      "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
-      "template_id": "entrypoint_status_matrix",
+      "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PUBLIC_PUBLIC",
+      "template_id": "entrypoint_public_sensitive",
       "parameters": {
         "scenario_id": "scn_payment:8ded4d5d19b504265dff07e2fcc2742f",
         "endpoint": "/cancel",
         "method": "GET",
         "service_name": "payment",
-        "allowed_roles": [
-          "ADMIN",
-          "CUSTOMER"
-        ],
-        "denied_roles": [],
-        "expected_status_by_role": {
-          "ADMIN": "2xx",
-          "CUSTOMER": "2xx"
-        }
+        "sensitivity_type": "PUBLIC",
+        "authorization": {
+          "required_roles": [
+            "ADMIN",
+            "CUSTOMER"
+          ],
+          "source": "default",
+          "priority": null,
+          "scope_pattern": null,
+          "public": true
+        },
+        "policy_inconsistencies": [
+          {
+            "role": "PUBLIC",
+            "type": "PolicyExposure",
+            "details": {
+              "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
+              "endpoint": "payment:8ded4d5d19b504265dff07e2fcc2742f"
+            }
+          }
+        ]
       }
     },
     "handles_pii": false,
@@ -25639,11 +27136,32 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "customer:6029a172fa81c7eef0f8acdf56c14b66",
+          "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "CUSTOMER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "customer:6029a172fa81c7eef0f8acdf56c14b66",
+          "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "CUSTOMER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
@@ -25735,6 +27253,26 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "customer:6029a172fa81c7eef0f8acdf56c14b66",
+              "downstream_endpoint": "product:8b562509d9c4cc27f5dfde34b7011cc0",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "CUSTOMER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "customer:6029a172fa81c7eef0f8acdf56c14b66",
+              "downstream_endpoint": "media:a469191aedaaa3f8ed87df26a2092de6",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -25780,6 +27318,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -25906,6 +27445,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -26016,6 +27556,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -26142,6 +27683,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -26268,6 +27810,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -26394,6 +27937,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -26537,6 +28081,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -26663,6 +28208,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -26806,6 +28352,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -27011,6 +28558,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -27121,6 +28669,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {

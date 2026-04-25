@@ -201,6 +201,34 @@ def derive_expected_status(endpoint_obj: dict, roles_universe: List[str]) -> Dic
     return {r: "2xx" if r in allowed else "403" for r in roles_universe}
 
 
+def derive_chain_expected_status(vector: dict, roles_universe: List[str]) -> Dict[str, str]:
+    pm = vector.get("permission_matrix", {}) or {}
+    roles = pm.get("roles", []) or []
+    matrix = pm.get("matrix", []) or []
+
+    if not roles or not matrix:
+        return {r: "UNKNOWN" for r in roles_universe}
+
+    role_to_index = {role: idx for idx, role in enumerate(roles)}
+    expected: Dict[str, str] = {}
+
+    for role in roles_universe:
+        role_index = role_to_index.get(role)
+        if role_index is None:
+            expected[role] = "UNKNOWN"
+            continue
+
+        values = [row[role_index] for row in matrix if role_index < len(row)]
+        if not values:
+            expected[role] = "UNKNOWN"
+        elif any(value == 0 for value in values):
+            expected[role] = "403"
+        else:
+            expected[role] = "2xx"
+
+    return expected
+
+
 def _normalize_status(s: Any) -> str:
     s = str(s).strip()
     if s in ("200", "201", "204"):
@@ -208,6 +236,17 @@ def _normalize_status(s: Any) -> str:
     if s.startswith("2") and s.endswith("xx"):
         return "2xx"
     return s
+
+
+def infer_sensitivity_from_endpoint(endpoint_obj: dict) -> str:
+    uri = str(endpoint_obj.get("fullUri") or endpoint_obj.get("simplifiedUri") or "").lower()
+    if any(token in uri for token in ("pay", "refund", "payment", "transaction")):
+        return "FINANCIAL"
+    if any(token in uri for token in ("user", "profile", "personal", "account")):
+        return "PII"
+    if any(token in uri for token in ("admin", "config", "report", "manage")):
+        return "INTERNAL"
+    return "PUBLIC"
 
 
 def derive_inconsistencies_from_vector(vector: dict) -> Set[Tuple[str, str, str, str]]:
@@ -238,7 +277,11 @@ def derive_inconsistencies_from_vector(vector: dict) -> Set[Tuple[str, str, str,
         for r_i, role in enumerate(roles):
             root_val = root_perms[r_i]
             down_val = down_perms[r_i]
-            if root_val == 0 and down_val == 1:
+            if root_val == down_val:
+                continue
+            if -1 in (root_val, down_val):
+                gt.add(("UndefinedPolicy", role, endpoints[0], endpoints[j]))
+            elif root_val == 0 and down_val == 1:
                 gt.add(("OverPermissiveDownstream", role, endpoints[0], endpoints[j]))
             elif root_val == 1 and down_val == 0:
                 gt.add(("UnderPermissiveDownstream", role, endpoints[0], endpoints[j]))
@@ -254,20 +297,15 @@ def derive_all_inconsistencies_from_vectors(vectors_json: dict) -> Set[Tuple[str
     return gt
 
 
-def has_policy_exposure_ground_truth(scenario: dict, endpoint_obj: dict) -> bool:
+def has_policy_exposure_ground_truth(endpoint_obj: dict) -> bool:
     """
     PolicyExposure = endpoint is public AND handles sensitive data (PII/Financial).
-    Uses sensitivity_type from source code analysis (independent of LLM).
+    Uses endpoint metadata only, independent of generated scenario labels.
     """
     auth = endpoint_obj.get("authorization", {}) or {}
     if not bool(auth.get("public", False)):
         return False
-    sensitivity = scenario.get("sensitivity_type", "")
-    if sensitivity in ("FINANCIAL", "PII"):
-        return True
-    if scenario.get("handles_pii", False):
-        return True
-    return False
+    return infer_sensitivity_from_endpoint(endpoint_obj) in ("FINANCIAL", "PII", "INTERNAL")
 
 
 # ---------------------------------------------------------------------------
@@ -311,8 +349,8 @@ def compute_target_metrics(
 
     # PolicyExposure ground truth
     has_pe = False
-    if endpoint_obj and matched:
-        has_pe = has_policy_exposure_ground_truth(matched[0], endpoint_obj)
+    if endpoint_obj:
+        has_pe = has_policy_exposure_ground_truth(endpoint_obj)
 
     # ===== RQ1: Completeness =====
 
@@ -364,8 +402,10 @@ def compute_target_metrics(
     correct_outcome = 0
     total_outcome = 0
     if endpoint_obj:
-        gt_status = derive_expected_status(endpoint_obj, all_roles)
+        entry_gt_status = derive_expected_status(endpoint_obj, all_roles)
+        chain_gt_status = derive_chain_expected_status(vector, all_roles) if vector else entry_gt_status
         for s in matched:
+            gt_status = chain_gt_status if s.get("type") == "DownstreamPolicyConsistency" else entry_gt_status
             observed = s.get("expected_status_by_role", {}) or {}
             for r in all_roles:
                 total_outcome += 1
@@ -407,13 +447,21 @@ def compute_target_metrics(
                         row = pm_matrix[j]  # matrix[endpoint_idx][role_idx]
                         s_a = set(node_perm.get("allowed_roles", []) or []) & set(pm_roles)
                         s_d = set(node_perm.get("denied_roles", []) or []) & set(pm_roles)
+                        s_u = set(node_perm.get("unknown_roles", []) or []) & set(pm_roles)
                         for r in all_roles:
                             ri = role_idx.get(r)
                             if ri is None or ri >= len(row):
                                 continue
                             gt_is_allowed = row[ri] == 1
-                            gt_is_denied = not gt_is_allowed
-                            if ((r in s_a) != gt_is_allowed) or ((r in s_d) != gt_is_denied):
+                            gt_is_denied = row[ri] == 0
+                            gt_is_unknown = row[ri] == -1
+                            if gt_is_unknown:
+                                # Accept role in either allowed_roles (public endpoint)
+                                # or unknown_roles (unresolved endpoint) — both are valid
+                                # representations of a -1 matrix entry.
+                                if r not in s_a and r not in s_u:
+                                    per_role_ok[r] = False
+                            elif ((r in s_a) != gt_is_allowed) or ((r in s_d) != gt_is_denied):
                                 per_role_ok[r] = False
                     for r in all_roles:
                         total_role += 1
@@ -441,9 +489,9 @@ def compute_target_metrics(
                 s_entity = (s.get("entity_schema", {}) or {}).get("entity_name", "")
                 if s_body != ep_body_type and s_entity != ep_body_type:
                     ok = False
-            total_param += len(all_roles)
+            total_param += 1
             if ok:
-                correct_param += len(all_roles)
+                correct_param += 1
 
     # Confusion Matrix (template convention) computed PER DOWNSTREAM SCENARIO.
     # We classify a scenario as "GT inconsistent" if any (root, downstream) pair in its
@@ -453,10 +501,15 @@ def compute_target_metrics(
     # - using a single gt_has_inconsistency boolean for the whole endpoint
     gt_pairs = {(u, d) for (_, _, u, d) in gt_incs}
 
-    tn_val = 0  # correctly captures inconsistency
-    fp_val = 0  # missed inconsistency
-    fn_val = 0  # incorrectly captures inconsistencies
-    tp_val = 0  # tests consistency
+    # Standard ML convention:
+    #   TP = scenario correctly flags an actual inconsistency (predicted=positive, actual=positive)
+    #   FP = scenario flags inconsistency where none exists  (predicted=positive, actual=negative)
+    #   FN = scenario misses a real inconsistency            (predicted=negative, actual=positive)
+    #   TN = scenario correctly reports consistency          (predicted=negative, actual=negative)
+    tp_val = 0
+    fp_val = 0
+    fn_val = 0
+    tn_val = 0
 
     for s in down_scns:
         chain_perm = s.get("chain_permissions", {}) or {}
@@ -472,8 +525,8 @@ def compute_target_metrics(
             if up and down:
                 predicted_pairs.add((up, down))
 
-        # Build scenario chain pairs as (root, downstream)
-        root_id = next(iter(predicted_pairs))[0] if predicted_pairs else (chain_ids[0] if chain_ids else "")
+        # Build scenario chain pairs as (root, downstream) to compare against GT pairs
+        root_id = chain_ids[0] if chain_ids else ""
         scenario_pairs: Set[Tuple[str, str]] = set(predicted_pairs)
         if root_id:
             for d_id in chain_ids[1:]:
@@ -484,13 +537,13 @@ def compute_target_metrics(
         actual_inconsistent = bool(gt_pairs) and any(p in gt_pairs for p in scenario_pairs)
 
         if actual_inconsistent and predicted_inconsistent:
-            tn_val += 1
-        elif actual_inconsistent and not predicted_inconsistent:
-            fp_val += 1
-        elif not actual_inconsistent and predicted_inconsistent:
-            fn_val += 1
-        else:
             tp_val += 1
+        elif actual_inconsistent and not predicted_inconsistent:
+            fn_val += 1
+        elif not actual_inconsistent and predicted_inconsistent:
+            fp_val += 1
+        else:
+            tn_val += 1
 
     return {
         "label": label,
@@ -630,7 +683,7 @@ def write_excel(out_path: str, target_rows: List[dict], rq3: dict) -> None:
         ws.cell(row=r, column=13, value=f"=IF(L{r}+K{r}>0,K{r}/(K{r}+L{r}),0)")
         ws.cell(row=r, column=14, value=row_data["positive"])
         ws.cell(row=r, column=15, value=row_data["negative"])
-        ws.cell(row=r, column=16, value=f"=IF(O{r}>0,O{r}/N{r},0)")
+        ws.cell(row=r, column=16, value=f"=IF(O{r}>0,N{r}/O{r},0)")
 
     # ===================== RQ2: Correctness Metrics =====================
 
@@ -645,9 +698,9 @@ def write_excel(out_path: str, target_rows: List[dict], rq3: dict) -> None:
         (2, 4, "Correct Expected Outcome Rate"),
         (5, 7, "Correct Role Assignment Rate"),
         (8, 10, "Correct Parameter Specification Rate "),
-        (11, 13, "True Negative Rate"),
-        (14, 16, "False Negative Rate"),
-        (17, 19, "False Positive Rate"),
+        (11, 13, "True Positive Rate (TPR)"),
+        (14, 16, "False Positive Rate (FPR)"),
+        (17, 19, "False Negative Rate (FNR)"),
         (20, 20, "Precision"),
         (21, 21, "Recall"),
         (22, 22, "F1 Score"),
@@ -672,15 +725,15 @@ def write_excel(out_path: str, target_rows: List[dict], rq3: dict) -> None:
         8: "Cases with Valid Parameters",
         9: "Total Cases",
         10: "Parameter Specification Rate",
-        11: "Cases that correctly captures inconsistency (TN)",
-        12: "Cases that missed inconsistency (FP)",
-        13: "TNR",
-        14: "Cases that incorrectly captures inconsistencies (FN)",
-        15: "Cases that tests consistency (TP) ",
-        16: "FNR",
-        17: "Cases that missed inconsistency (FP)",
-        18: "Cases that correctly captures inconsistency (TN)",
-        19: "FPR",
+        11: "True Positives: correctly flags inconsistency (TP)",
+        12: "False Negatives: misses real inconsistency (FN)",
+        13: "TPR = TP/(TP+FN)",
+        14: "False Positives: false alarm (FP)",
+        15: "True Negatives: correctly reports consistent (TN)",
+        16: "FPR = FP/(FP+TN)",
+        17: "False Positives: false alarm (FP)",
+        18: "True Negatives: correctly reports consistent (TN)",
+        19: "FNR = FN/(FN+TP)",
         20: "Precision",
         21: "Recall",
         22: "F1 Score",
@@ -704,17 +757,18 @@ def write_excel(out_path: str, target_rows: List[dict], rq3: dict) -> None:
         ws.cell(row=r, column=8, value=row_data["correct_param"])
         ws.cell(row=r, column=9, value=row_data["total_param"])
         ws.cell(row=r, column=10, value=f"=IF(I{r}>0,(H{r}/I{r})*100,0)")
-        ws.cell(row=r, column=11, value=row_data["tn"])
-        ws.cell(row=r, column=12, value=row_data["fp"])
-        ws.cell(row=r, column=13, value=f"=IF(K{r}+L{r}>0,K{r}/(K{r}+L{r}),0)")
-        ws.cell(row=r, column=14, value=row_data["fn"])
-        ws.cell(row=r, column=15, value=row_data["tp"])
-        ws.cell(row=r, column=16, value=f"=IF(N{r}+O{r}>0,N{r}/(N{r}+O{r}),0)")
-        ws.cell(row=r, column=17, value=row_data["fp"])
-        ws.cell(row=r, column=18, value=row_data["tn"])
-        ws.cell(row=r, column=19, value=f"=IF(Q{r}+R{r}>0,Q{r}/(Q{r}+R{r}),0)")
-        ws.cell(row=r, column=20, value=f"=IF(K{r}+N{r}>0,K{r}/(K{r}+N{r}),0)")
-        ws.cell(row=r, column=21, value=f"=IF(K{r}+Q{r}>0,K{r}/(K{r}+Q{r}),0)")
+        # Standard ML convention: col11=TP, col12=FN, col14=FP, col15=TN
+        ws.cell(row=r, column=11, value=row_data["tp"])
+        ws.cell(row=r, column=12, value=row_data["fn"])
+        ws.cell(row=r, column=13, value=f"=IF(K{r}+L{r}>0,K{r}/(K{r}+L{r}),0)")  # TPR=TP/(TP+FN)
+        ws.cell(row=r, column=14, value=row_data["fp"])
+        ws.cell(row=r, column=15, value=row_data["tn"])
+        ws.cell(row=r, column=16, value=f"=IF(N{r}+O{r}>0,N{r}/(N{r}+O{r}),0)")  # FPR=FP/(FP+TN)
+        ws.cell(row=r, column=17, value=row_data["fn"])
+        ws.cell(row=r, column=18, value=row_data["tp"])
+        ws.cell(row=r, column=19, value=f"=IF(Q{r}+R{r}>0,Q{r}/(Q{r}+R{r}),0)")  # FNR=FN/(FN+TP)
+        ws.cell(row=r, column=20, value=f"=IF(K{r}+N{r}>0,K{r}/(K{r}+N{r}),0)")  # Precision=TP/(TP+FP)
+        ws.cell(row=r, column=21, value=f"=IF(K{r}+L{r}>0,K{r}/(K{r}+L{r}),0)")  # Recall=TP/(TP+FN)
         ws.cell(row=r, column=22, value=f"=IF(T{r}+U{r}>0,2*(T{r}*U{r})/(T{r}+U{r}),0)")
 
     # ===================== RQ3: Executability Metrics =====================
@@ -798,9 +852,9 @@ TARGETS: List[Tuple[str, str]] = [
     ("POST", "/storefront/ratings"),
     ("POST", "/storefront/sampledata"),
     ("DELETE", "/backoffice/ratings/{id}"),
-    ("DELETE", "/ApiConstant.WAREHOUSE_URL/{id}"),
+    ("DELETE", "/backoffice/warehouses/{id}"),
     ("PUT", "/backoffice/products/subtract-quantity"),
-    ("PUT", "/Constants.ApiConstant.STATE_OR_PROVINCES_URL/{id}"),
+    ("PUT", "/backoffice/state-or-provinces/{id}"),
 ]
 
 

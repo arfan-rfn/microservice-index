@@ -25,6 +25,7 @@ preventing privilege escalation or inconsistent access control.
 
 import json
 import argparse
+from collections import Counter
 from pathlib import Path
 from typing import Dict, List, Any, Tuple
 from ir_feature_extractor import analyze_ir_node
@@ -116,6 +117,202 @@ def _row_for_endpoint(pm: Dict[str, Any], endpoint_id: str) -> Tuple[List[int], 
     return matrix[row_idx], roles
 
 
+def resolve_permission_matrix_endpoint(pm: Dict[str, Any], chain_node: Dict[str, Any]) -> "str | None":
+    endpoints: List[str] = pm.get("endpoints", [])
+    endpoint_id = chain_node.get("endpoint_id")
+    uri = chain_node.get("uri")
+
+    if endpoint_id and endpoint_id in endpoints:
+        return endpoint_id
+
+    if uri:
+        for candidate in endpoints:
+            if candidate == uri:
+                return candidate
+            if candidate.startswith("UNRESOLVED:") and candidate[len("UNRESOLVED:"):] == uri:
+                return candidate
+            if candidate.endswith(uri):
+                return candidate
+
+    return None
+
+
+def split_permission_row(roles: List[str], row: List[int], is_public_hint: bool = False) -> Dict[str, Any]:
+    """Split a permission matrix row into allowed/denied/unknown role buckets.
+
+    When *is_public_hint* is True (caller knows the endpoint is genuinely public,
+    e.g. no authentication required) all -1 values are promoted to allowed (2xx).
+    Without the hint every -1 is treated as unknown — this is the correct behaviour
+    for UNRESOLVED downstream nodes where we simply have no permission data.
+    """
+    allowed, denied, unknown = [], [], []
+    expected_status_by_role = {}
+    for i, v in enumerate(row):
+        role = roles[i]
+        if v == 1 or (v == -1 and is_public_hint):
+            allowed.append(role)
+            expected_status_by_role[role] = "2xx"
+        elif v == 0:
+            denied.append(role)
+            expected_status_by_role[role] = "403"
+        else:
+            unknown.append(role)
+            expected_status_by_role[role] = "UNKNOWN"
+
+    is_public_endpoint = bool(allowed) and not denied and not unknown
+
+    return {
+        "allowed_roles": allowed,
+        "denied_roles": denied,
+        "unknown_roles": unknown,
+        "expected_status_by_role": expected_status_by_role,
+        "is_public_endpoint": is_public_endpoint,
+    }
+
+
+def collect_chain_permission_rows(pm: Dict[str, Any], call_chain: List[Dict[str, Any]]) -> Tuple[List[str], List[Dict[str, Any]]]:
+    rows: List[Dict[str, Any]] = []
+    roles: List[str] = pm.get("roles", [])
+
+    for chain_node in call_chain:
+        resolved_endpoint = resolve_permission_matrix_endpoint(pm, chain_node)
+        if not resolved_endpoint:
+            continue
+
+        row, row_roles = _row_for_endpoint(pm, resolved_endpoint)
+        if not row or not row_roles:
+            continue
+
+        # Nodes that could not be resolved at static analysis time (resolved=False,
+        # endpoint_id=None) have permission values of -1, but -1 here means
+        # "unresolved/unknown" — NOT "publicly accessible".  Force the values to -1
+        # so that split_permission_row places roles in unknown_roles rather than
+        # treating the endpoint as public.
+        is_unresolved = not chain_node.get("resolved", True) or chain_node.get("endpoint_id") is None
+        effective_values = [-1] * len(row) if is_unresolved else row
+
+        rows.append({
+            "endpoint": resolved_endpoint,
+            "values": effective_values,
+            "roles": row_roles,
+            "is_unresolved": is_unresolved,
+        })
+
+    return roles, rows
+
+
+UNRESOLVED_ENDPOINT_PREFIX = "UNRESOLVED:"
+
+
+def partition_chain_rows_by_resolution(
+    rows: List[Dict[str, Any]],
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    """Partition ordered chain rows into a resolved prefix and an unresolved
+    black box.
+
+    Once an unresolved endpoint is reached, every subsequent node is folded
+    into the same unresolved block — even if later nodes could individually be
+    resolved — because we cannot statically reason about what happens between
+    the boundary and those nodes through an opaque segment.
+    """
+    resolved_prefix: List[Dict[str, Any]] = []
+    unresolved_block: List[Dict[str, Any]] = []
+
+    for row in rows:
+        endpoint = row.get("endpoint", "") or ""
+        is_unresolved = bool(row.get("is_unresolved")) or endpoint.startswith(
+            UNRESOLVED_ENDPOINT_PREFIX
+        )
+        if unresolved_block or is_unresolved:
+            unresolved_block.append(row)
+        else:
+            resolved_prefix.append(row)
+
+    return resolved_prefix, unresolved_block
+
+
+def summarize_unresolved_boundary(
+    pm: Dict[str, Any],
+    call_chain: List[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Build metadata about the unresolved downstream black box, if any.
+
+    The unresolved block is anchored at the last resolved endpoint (the
+    "boundary"). Roles that the boundary allows are the ones that must be
+    exercised at runtime against that boundary endpoint; a divergence from the
+    boundary's expected result signals an inconsistency somewhere inside the
+    opaque block. Roles that the boundary denies cannot be resolved statically.
+    """
+    roles = pm.get("roles", []) or []
+    _, rows = collect_chain_permission_rows(pm, call_chain)
+    resolved_prefix, unresolved_block = partition_chain_rows_by_resolution(rows)
+
+    if not unresolved_block or not resolved_prefix or not roles:
+        return {}
+
+    boundary = resolved_prefix[-1]
+    boundary_values = boundary.get("values", []) or []
+
+    roles_requiring_runtime_tests: List[str] = []
+    roles_unresolvable: List[str] = []
+    roles_unknown_at_boundary: List[str] = []
+
+    for r_idx, role in enumerate(roles):
+        if r_idx >= len(boundary_values):
+            continue
+        v = boundary_values[r_idx]
+        if v == 1:
+            roles_requiring_runtime_tests.append(role)
+        elif v == 0:
+            roles_unresolvable.append(role)
+        else:
+            roles_unknown_at_boundary.append(role)
+
+    return {
+        "boundary_endpoint": boundary["endpoint"],
+        "unresolved_endpoints": [row["endpoint"] for row in unresolved_block],
+        "roles_requiring_runtime_tests": roles_requiring_runtime_tests,
+        "roles_unresolvable": roles_unresolvable,
+        "roles_unknown_at_boundary": roles_unknown_at_boundary,
+        "guidance": (
+            "Treat the unresolved downstream nodes as a single black box. "
+            "Generate tests targeting the boundary endpoint with every role "
+            "to observe responses; a divergence from the boundary's expected "
+            "outcome indicates an inconsistency inside the black box. Roles "
+            "denied at the boundary cannot be resolved statically."
+        ),
+    }
+
+
+def dedupe_policy_inconsistencies(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    deduped: List[Dict[str, Any]] = []
+    seen = set()
+
+    for item in items or []:
+        if not isinstance(item, dict):
+            continue
+        details = item.get("details", {}) or {}
+        key = (
+            item.get("type"),
+            item.get("role"),
+            details.get("upstream_endpoint"),
+            details.get("downstream_endpoint"),
+            details.get("endpoint"),
+            details.get("boundary_endpoint"),
+            details.get("reason"),
+        )
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(item)
+
+    return deduped
+
+
+def extract_policy_inconsistency_roles(items: List[Dict[str, Any]]) -> List[str]:
+    return sorted({item.get("role") for item in items or [] if item.get("role")})
+
+
 def summarize_permissions(pm: Dict[str, Any], endpoint_id: str) -> Dict[str, Any]:
     """Summarizes permissions and detects potential inconsistencies for a specific endpoint.
     
@@ -146,19 +343,13 @@ def summarize_permissions(pm: Dict[str, Any], endpoint_id: str) -> Dict[str, Any
     is_public_endpoint = False
 
     if row:
-        for i, v in enumerate(row):
-            role = roles[i]
-            if v == 1:
-                allowed.append(role)
-            elif v == 0:
-                denied.append(role)
-            else:
-                unknown.append(role)
-            expected_status_by_role[role] = StatusMap.get(v, "UNKNOWN")
-
-        # Check if all roles are -1 (fully public endpoint)
-        if all(v == -1 for v in row):
-            is_public_endpoint = True
+        # For an entry-point endpoint summary, -1 means "no permission check = public".
+        row_summary = split_permission_row(roles, row, is_public_hint=True)
+        allowed = row_summary["allowed_roles"]
+        denied = row_summary["denied_roles"]
+        unknown = row_summary["unknown_roles"]
+        expected_status_by_role = row_summary["expected_status_by_role"]
+        is_public_endpoint = row_summary["is_public_endpoint"]
 
         # Sensitivity detection (based on endpoint name)
         eid_lower = endpoint_id.lower()
@@ -174,6 +365,7 @@ def summarize_permissions(pm: Dict[str, Any], endpoint_id: str) -> Dict[str, Any
         # Mark inconsistency if a sensitive endpoint is public
         if is_public_endpoint and sensitivity_type in ["FINANCIAL", "PII", "INTERNAL"]:
             policy_inconsistencies.append({
+                "role": "PUBLIC",
                 "type": "PolicyExposure",
                 "details": {
                     "reason": f"Sensitive endpoint ({sensitivity_type}) marked as PUBLIC (-1)",
@@ -205,74 +397,62 @@ def compute_chain_permissions(pm: Dict[str, Any], call_chain: List[Dict[str, Any
     """
 
     roles: List[str] = pm.get("roles", [])
-    endpoints: List[str] = pm.get("endpoints", [])
-    matrix: List[List[int]] = pm.get("matrix", [])
-
-    if not roles or not endpoints or not matrix or not call_chain:
-        return {"chain_allowed_roles": [], "per_endpoint": {}}
+    if not roles or not call_chain:
+        return {
+            "chain_allowed_roles": [],
+            "chain_denied_roles": [],
+            "chain_unknown_roles": [],
+            "chain_expected_status_by_role": {},
+            "per_endpoint": {},
+        }
 
     per_endpoint: Dict[str, Dict[str, List[str]]] = {}
+    roles, rows = collect_chain_permission_rows(pm, call_chain)
 
-    # Collect per-endpoint permissions along the chain where we have matrix rows.
-    for chain in call_chain:
-        eid = chain.get("endpoint_id")
-        uri = chain.get("uri")
-
-        # Resolve the identifier used in the permission_matrix. Prefer endpoint_id
-        # when present, otherwise fall back to URI-based matching, including
-        # entries prefixed with "UNRESOLVED:".
-        pm_eid = None
-        if eid and eid in endpoints:
-            pm_eid = eid
-        elif uri:
-            # Exact URI match or UNRESOLVED:URI match, plus suffix match as a
-            # safety net for slightly different encodings.
-            for e in endpoints:
-                if e == uri:
-                    pm_eid = e
-                    break
-                if e.startswith("UNRESOLVED:") and e[len("UNRESOLVED:"):] == uri:
-                    pm_eid = e
-                    break
-                if e.endswith(uri):
-                    pm_eid = e
-                    break
-
-        if not pm_eid:
-            continue
-
-        row, row_roles = _row_for_endpoint(pm, pm_eid)
-        if not row or not row_roles:
-            continue
-
-        allowed: List[str] = []
-        denied: List[str] = []
-        unknown: List[str] = []
-
-        for r_name, v in zip(row_roles, row):
-            if v == 1:
-                allowed.append(r_name)
-            elif v == 0:
-                denied.append(r_name)
-            else:
-                unknown.append(r_name)
-
-        per_endpoint[pm_eid] = {
-            "allowed_roles": allowed,
-            "denied_roles": denied,
-            "unknown_roles": unknown,
+    for row_info in rows:
+        # Resolved endpoints: -1 means "no restriction" = public access (is_public_hint=True).
+        # Unresolved endpoints: -1 means "we have no data" = unknown (is_public_hint=False).
+        is_public_hint = not row_info.get("is_unresolved", False)
+        row_summary = split_permission_row(row_info["roles"], row_info["values"], is_public_hint=is_public_hint)
+        per_endpoint[row_info["endpoint"]] = {
+            "allowed_roles": row_summary["allowed_roles"],
+            "denied_roles": row_summary["denied_roles"],
+            "unknown_roles": row_summary["unknown_roles"],
         }
 
     if not per_endpoint:
-        return {"chain_allowed_roles": [], "per_endpoint": {}}
+        return {
+            "chain_allowed_roles": [],
+            "chain_denied_roles": [],
+            "chain_unknown_roles": [],
+            "chain_expected_status_by_role": {},
+            "per_endpoint": {},
+        }
 
-    # Roles that are allowed on every endpoint for which we have data.
-    chain_allowed_roles: List[str] = roles[:]
-    for info in per_endpoint.values():
-        chain_allowed_roles = [r for r in chain_allowed_roles if r in info["allowed_roles"]]
+    chain_allowed_roles: List[str] = []
+    chain_denied_roles: List[str] = []
+    chain_unknown_roles: List[str] = []
+    chain_expected_status_by_role: Dict[str, str] = {}
+
+    for role in roles:
+        denied_somewhere = any(role in info["denied_roles"] for info in per_endpoint.values())
+        allowed_somewhere = any(role in info["allowed_roles"] for info in per_endpoint.values())
+
+        if denied_somewhere:
+            chain_denied_roles.append(role)
+            chain_expected_status_by_role[role] = "403"
+        elif allowed_somewhere:
+            chain_allowed_roles.append(role)
+            chain_expected_status_by_role[role] = "2xx"
+        else:
+            chain_unknown_roles.append(role)
+            chain_expected_status_by_role[role] = "UNKNOWN"
 
     return {
         "chain_allowed_roles": chain_allowed_roles,
+        "chain_denied_roles": chain_denied_roles,
+        "chain_unknown_roles": chain_unknown_roles,
+        "chain_expected_status_by_role": chain_expected_status_by_role,
         "per_endpoint": per_endpoint,
     }
 
@@ -306,55 +486,82 @@ def detect_policy_inconsistency(pm: Dict[str, Any], call_chain: List[Dict[str, A
     """
 
     roles = pm.get("roles", [])
-    endpoints = [c.get("endpoint_id") for c in call_chain if c.get("endpoint_id")]
-    pm_endpoints: List[str] = pm.get("endpoints", [])
-    matrix: List[List[int]] = pm.get("matrix", [])
+    _, rows = collect_chain_permission_rows(pm, call_chain)
 
-    if not matrix or not roles or not endpoints:
+    if not roles or len(rows) < 2:
         return []
 
-    # Collect permission rows (in order) for the endpoints in the call chain
-    rows = []
-    for eid in endpoints:
-        if eid in pm_endpoints:
-            idx = pm_endpoints.index(eid)
-            rows.append({"endpoint": eid, "values": matrix[idx]})
+    resolved_prefix, unresolved_block = partition_chain_rows_by_resolution(rows)
 
-    inconsistencies = []
+    inconsistencies: List[Dict[str, Any]] = []
 
-    # Compare consecutive endpoints for each role
-    for r_idx, role in enumerate(roles):
-        for i in range(len(rows) - 1):
-            up = rows[i]
-            down = rows[i + 1]
-            v_up = up["values"][r_idx]
-            v_down = down["values"][r_idx]
+    # 1) Compare the entrypoint (root) only against *resolved* downstream
+    #    endpoints. Unresolved nodes are skipped here because we cannot reason
+    #    about them individually — they are handled as a single black box below.
+    if len(resolved_prefix) >= 2:
+        root = resolved_prefix[0]
+        for r_idx, role in enumerate(roles):
+            v_up = root["values"][r_idx]
+            for down in resolved_prefix[1:]:
+                v_down = down["values"][r_idx]
 
-            if v_up == v_down:
-                continue  # No inconsistency for this role in this transition
+                if v_up == v_down:
+                    continue
 
-            # Classify type of inconsistency
-            if -1 in (v_up, v_down):
-                inconsistency_type = "UndefinedPolicy"
-            elif v_up == 1 and v_down == 0:
-                inconsistency_type = "UnderPermissiveDownstream"
-            elif v_up == 0 and v_down == 1:
-                inconsistency_type = "OverPermissiveDownstream"
-            else:
-                inconsistency_type = "RoleMismatch"
+                if -1 in (v_up, v_down):
+                    inconsistency_type = "UndefinedPolicy"
+                elif v_up == 1 and v_down == 0:
+                    inconsistency_type = "UnderPermissiveDownstream"
+                elif v_up == 0 and v_down == 1:
+                    inconsistency_type = "OverPermissiveDownstream"
+                else:
+                    inconsistency_type = "RoleMismatch"
+
+                inconsistencies.append({
+                    "role": role,
+                    "type": inconsistency_type,
+                    "details": {
+                        "upstream_endpoint": root["endpoint"],
+                        "downstream_endpoint": down["endpoint"],
+                        "upstream_value": v_up,
+                        "downstream_value": v_down,
+                    },
+                })
+
+    # 2) Collapse the unresolved block into a single black box anchored at the
+    #    last resolved endpoint (the boundary). Only roles that the boundary
+    #    denies are raised statically as UnresolvedDownstream, because for
+    #    those we cannot tell what happens inside the black box and cannot
+    #    exercise them at runtime either. Roles the boundary allows are meant
+    #    to be tested at runtime against the boundary endpoint; that guidance
+    #    is captured via summarize_unresolved_boundary(), not here.
+    if unresolved_block and resolved_prefix:
+        boundary = resolved_prefix[-1]
+        boundary_values = boundary.get("values", []) or []
+        unresolved_endpoints = [row["endpoint"] for row in unresolved_block]
+
+        for r_idx, role in enumerate(roles):
+            if r_idx >= len(boundary_values):
+                continue
+            if boundary_values[r_idx] != 0:
+                continue
 
             inconsistencies.append({
                 "role": role,
-                "type": inconsistency_type,
+                "type": "UnresolvedDownstream",
                 "details": {
-                    "upstream_endpoint": up["endpoint"],
-                    "downstream_endpoint": down["endpoint"],
-                    "upstream_value": v_up,
-                    "downstream_value": v_down
-                }
+                    "boundary_endpoint": boundary["endpoint"],
+                    "unresolved_endpoints": unresolved_endpoints,
+                    "boundary_value": boundary_values[r_idx],
+                    "reason": (
+                        "Role denied at boundary endpoint; downstream "
+                        "behavior inside the unresolved block cannot be "
+                        "statically resolved."
+                    ),
+                },
             })
 
-    return inconsistencies
+    return dedupe_policy_inconsistencies(inconsistencies)
 
 
 # =====================================================
@@ -435,11 +642,25 @@ def generate_scenarios(av: Dict[str, Any]) -> List[Dict[str, Any]]:
 
         scenario_type = classify_scenario(call_chain)
         perms_summary = summarize_permissions(pm, ep["id"])
-        inconsistencies = detect_policy_inconsistency(pm, call_chain)
         chain_perms = compute_chain_permissions(pm, call_chain)
+        unresolved_boundary = summarize_unresolved_boundary(pm, call_chain)
+        inconsistencies = dedupe_policy_inconsistencies(
+            perms_summary["policy_inconsistencies"] + detect_policy_inconsistency(pm, call_chain)
+        )
 
-        # Prefer roles that can traverse the entire chain when available.
-        chain_allowed_roles = chain_perms.get("chain_allowed_roles") or perms_summary["allowed_roles"]
+        if scenario_type == "DownstreamPolicyConsistency":
+            allowed_roles = chain_perms.get("chain_allowed_roles") or perms_summary["allowed_roles"]
+            denied_roles = chain_perms.get("chain_denied_roles") or perms_summary["denied_roles"]
+            unknown_roles = chain_perms.get("chain_unknown_roles") or perms_summary["unknown_roles"]
+            expected_status_by_role = (
+                chain_perms.get("chain_expected_status_by_role")
+                or perms_summary["expected_status_by_role"]
+            )
+        else:
+            allowed_roles = perms_summary["allowed_roles"]
+            denied_roles = perms_summary["denied_roles"]
+            unknown_roles = perms_summary["unknown_roles"]
+            expected_status_by_role = perms_summary["expected_status_by_role"]
 
         scenario = {
             "scenario_id": f"scn_{endpoint_id}",
@@ -447,21 +668,21 @@ def generate_scenarios(av: Dict[str, Any]) -> List[Dict[str, Any]]:
             "service_name": ep["service_name"],
             "endpoint": ep["uri"],
             "method": ep["method"],
-            # Permissions
-            "allowed_roles": chain_allowed_roles,
-            "denied_roles": perms_summary["denied_roles"],
-            "unknown_roles": perms_summary["unknown_roles"],
-            "expected_status_by_role": perms_summary["expected_status_by_role"],
+            "allowed_roles": allowed_roles,
+            "denied_roles": denied_roles,
+            "unknown_roles": unknown_roles,
+            "expected_status_by_role": expected_status_by_role,
             "chain_permissions": chain_perms.get("per_endpoint", {}),
-            # Metadata
             "max_depth": stats.get("max_depth_reached", 0),
             "total_calls": stats.get("total_calls", 0),
-            # Policy inconsistencies
             "policy_inconsistencies": inconsistencies,
-            "policy_inconsistency_roles": list({i["role"] for i in inconsistencies}),
+            "policy_inconsistency_roles": extract_policy_inconsistency_roles(inconsistencies),
+            "unresolved_boundary": unresolved_boundary,
             "expected_outcome": (
                 "Detect and explain inconsistency in downstream authorization policies"
                 if inconsistencies and scenario_type == "DownstreamPolicyConsistency"
+                else "Detect and explain entry-point authorization or exposure issue"
+                if inconsistencies
                 else "Return 2xx for allowed roles and 403 for denied roles"
             ),
         }
@@ -736,13 +957,13 @@ def infer_data_and_sensitivity(scenario: Dict[str, Any]):
     else:
         scenario["sensitivity_type"] = "PUBLIC"
 
-    # Public financial or PII endpoints = anomaly
-    if scenario["sensitivity_type"] in ["FINANCIAL", "PII"] and scenario["authorization"].get("public", False):
+    if scenario["sensitivity_type"] in ["FINANCIAL", "PII", "INTERNAL"] and scenario["authorization"].get("public", False):
         scenario.setdefault("policy_inconsistencies", []).append({
             "role": "PUBLIC",
             "type": "PolicyExposure",
             "details": {"reason": "Sensitive endpoint marked as PUBLIC (-1)"}
         })
+        scenario["policy_inconsistencies"] = dedupe_policy_inconsistencies(scenario["policy_inconsistencies"])
 
     return scenario
 
@@ -876,6 +1097,53 @@ def build_prompt_context(scenario: Dict[str, Any]):
     return scenario
 
 
+def build_generation_audit_report(scenarios: List[Dict[str, Any]]) -> Dict[str, Any]:
+    type_counter: Counter[str] = Counter()
+    category_counter: Counter[str] = Counter()
+    template_counter: Counter[str] = Counter()
+    depth_counter: Counter[int] = Counter()
+    total_calls_counter: Counter[int] = Counter()
+    policy_type_counter: Counter[str] = Counter()
+    missing_role_coverage: List[Dict[str, Any]] = []
+
+    for scenario in scenarios:
+        type_counter[scenario.get("type", "UNKNOWN")] += 1
+        category_counter[scenario.get("scenario_category", "UNSET")] += 1
+        template_counter[scenario.get("prompt_template_id", "UNKNOWN")] += 1
+        depth_counter[scenario.get("max_depth", 0)] += 1
+        total_calls_counter[scenario.get("total_calls", 0)] += 1
+
+        for item in scenario.get("policy_inconsistencies", []) or []:
+            policy_type_counter[item.get("type", "UNKNOWN")] += 1
+
+        expected_roles = set((scenario.get("expected_status_by_role") or {}).keys())
+        observed_roles = (
+            set(scenario.get("allowed_roles", []) or [])
+            | set(scenario.get("denied_roles", []) or [])
+            | set(scenario.get("unknown_roles", []) or [])
+        )
+        if expected_roles != observed_roles:
+            missing_role_coverage.append({
+                "scenario_id": scenario.get("scenario_id"),
+                "method": scenario.get("method"),
+                "endpoint": scenario.get("endpoint"),
+                "expected_roles": sorted(expected_roles),
+                "observed_roles": sorted(observed_roles),
+            })
+
+    return {
+        "total_scenarios": len(scenarios),
+        "scenarios_per_type": dict(type_counter.most_common()),
+        "scenarios_per_category": dict(category_counter.most_common()),
+        "scenarios_per_prompt_template": dict(template_counter.most_common()),
+        "scenarios_per_depth": dict(sorted(depth_counter.items())),
+        "scenarios_per_total_calls": dict(sorted(total_calls_counter.items())),
+        "policy_inconsistency_types": dict(policy_type_counter.most_common()),
+        "missing_role_coverage_count": len(missing_role_coverage),
+        "missing_role_coverage_examples": missing_role_coverage[:20],
+    }
+
+
 # =====================================================
 #  MAIN PIPELINE
 # =====================================================
@@ -917,6 +1185,17 @@ def main():
         action="store_true",
         help="List distinct prompt_template_id values present in the generated scenarios.",
     )
+    parser.add_argument(
+        "--audit-report",
+        dest="audit_report_path",
+        help="Optional JSON file path to write a generation audit summary.",
+    )
+    parser.add_argument(
+        "--base-path",
+        dest="base_path",
+        default="yas/main",
+        help="Dataset base folder containing all_vectors.json/endpoints.json/components.json.",
+    )
     args = parser.parse_args()
 
     # BASE_PATH = "train-ticket-aitest/first-inconsistency-injection"
@@ -925,6 +1204,7 @@ def main():
     # BASE_PATH = "yas/main"
     # BASE_PATH = "yas/first-injection"
     BASE_PATH = "yas/second-injection"
+    # BASE_PATH = args.base_path
 
     all_vectors = load_json(f"{BASE_PATH}/all_vectors.json")
     endpoints = load_json(f"{BASE_PATH}/endpoints.json")
@@ -939,6 +1219,8 @@ def main():
         s = enrich_from_components(s, components)
         s = enrich_entity_schema_from_components(s, components)
         s = infer_data_and_sensitivity(s)
+        s["policy_inconsistencies"] = dedupe_policy_inconsistencies(s.get("policy_inconsistencies", []))
+        s["policy_inconsistency_roles"] = extract_policy_inconsistency_roles(s.get("policy_inconsistencies", []))
 
         # Now that sensitivity and exposure (public vs restricted) are known,
         # derive a high-level theoretical scenario category.
@@ -981,8 +1263,19 @@ def main():
     else:
         output_path = f"{BASE_PATH}/scenarios_llm_ready.json"
 
+    audit_report = build_generation_audit_report(enriched_scenarios)
+
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(enriched_scenarios, f, indent=2, ensure_ascii=False)
+    if args.audit_report_path:
+        with open(args.audit_report_path, "w", encoding="utf-8") as f:
+            json.dump(audit_report, f, indent=2, ensure_ascii=False)
+        print(f"📊 Generation audit report saved to {args.audit_report_path}")
+    print(
+        "📈 Generation summary: "
+        f"types={audit_report['scenarios_per_type']} "
+        f"missing_role_coverage={audit_report['missing_role_coverage_count']}"
+    )
     print(f"✅ LLM-ready scenarios saved to {output_path} ({len(enriched_scenarios)} entries)")
 
 
