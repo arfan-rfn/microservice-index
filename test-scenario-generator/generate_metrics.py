@@ -923,7 +923,7 @@ def main() -> None:
 
     rq3 = compute_rq3_metrics(scenarios)
 
-    print(f"\n--- Summary ---")
+    print("\n--- Summary ---")
     total_tn = sum(r["tn"] for r in target_rows)
     total_fp = sum(r["fp"] for r in target_rows)
     total_fn = sum(r["fn"] for r in target_rows)
