@@ -522,48 +522,59 @@ def compute_target_metrics(
             if body_ok:
                 correct_param += 1
 
-    # Confusion Matrix (template convention) computed PER DOWNSTREAM SCENARIO.
-    # We classify a scenario as "GT inconsistent" if any (root, downstream) pair in its
-    # chain intersects a ground-truth inconsistent pair derived from the vector.
-    # This avoids:
-    # - mixing EntryPointAuthorization scenarios into inconsistency metrics
-    # - using a single gt_has_inconsistency boolean for the whole endpoint
+    # Confusion Matrix — computed PER MATCHED SCENARIO.
+    #
+    # Standard ML convention (consistent with inc_defined / inc_in_path counts):
+    #   TP = scenario flags an inconsistency that is actually present
+    #   FP = scenario flags an inconsistency that is NOT present
+    #   FN = scenario fails to flag an inconsistency that IS present
+    #   TN = scenario correctly reports no inconsistency
+    #
+    # A scenario is "predicted inconsistent" when it carries ANY entry in
+    # `policy_inconsistencies`, regardless of the detail shape — so
+    # PolicyExposure, OverPermissiveDownstream, UnderPermissiveDownstream,
+    # UnresolvedDownstream, RoleMismatch, etc. all count. The previous
+    # implementation only recognized inconsistencies whose details carried
+    # `upstream_endpoint`/`downstream_endpoint`, which silently dropped
+    # PolicyExposure and UnresolvedDownstream and produced spurious TN/FN.
+    #
+    # The "actual inconsistent" ground truth has two independent sources, both
+    # already used by inc_in_path:
+    #   (a) chain inconsistencies: any (root, downstream) pair from the
+    #       scenario's chain intersects gt_pairs derived from the vector;
+    #   (b) policy-exposure ground truth on the target endpoint (has_pe).
+    #
+    # Both EntryPointAuthorization and DownstreamPolicyConsistency scenarios
+    # are evaluated. Entry-point scenarios have no chain pairs, so they only
+    # consume the policy-exposure side of the ground truth — but they MUST be
+    # included, otherwise pure entrypoint targets always report all-zero
+    # confusion despite carrying valid PE detections.
     gt_pairs = {(u, d) for (_, _, u, d) in gt_incs}
 
-    # Standard ML convention:
-    #   TP = scenario correctly flags an actual inconsistency (predicted=positive, actual=positive)
-    #   FP = scenario flags inconsistency where none exists  (predicted=positive, actual=negative)
-    #   FN = scenario misses a real inconsistency            (predicted=negative, actual=positive)
-    #   TN = scenario correctly reports consistency          (predicted=negative, actual=negative)
     tp_val = 0
     fp_val = 0
     fn_val = 0
     tn_val = 0
 
-    for s in down_scns:
+    for s in matched:
         chain_perm = s.get("chain_permissions", {}) or {}
         chain_ids = [k for k in chain_perm.keys() if isinstance(k, str) and k]
 
-        predicted_pairs: Set[Tuple[str, str]] = set()
-        for inc in (s.get("policy_inconsistencies", []) or []):
-            if not isinstance(inc, dict):
-                continue
-            details = inc.get("details", {}) or {}
-            up = details.get("upstream_endpoint") or details.get("upstream") or ""
-            down = details.get("downstream_endpoint") or details.get("downstream") or ""
-            if up and down:
-                predicted_pairs.add((up, down))
+        # Predicted positive iff the scenario surfaced any inconsistency at all.
+        predicted_inconsistent = any(
+            isinstance(inc, dict) for inc in (s.get("policy_inconsistencies", []) or [])
+        )
 
-        # Build scenario chain pairs as (root, downstream) to compare against GT pairs
+        # Actual positive iff GT chain pair intersects scenario chain OR the
+        # target endpoint has policy-exposure ground truth.
+        scenario_pairs: Set[Tuple[str, str]] = set()
         root_id = chain_ids[0] if chain_ids else ""
-        scenario_pairs: Set[Tuple[str, str]] = set(predicted_pairs)
         if root_id:
             for d_id in chain_ids[1:]:
                 if d_id != root_id:
                     scenario_pairs.add((root_id, d_id))
-
-        predicted_inconsistent = bool(predicted_pairs)
-        actual_inconsistent = bool(gt_pairs) and any(p in gt_pairs for p in scenario_pairs)
+        chain_actual = bool(gt_pairs) and any(p in gt_pairs for p in scenario_pairs)
+        actual_inconsistent = chain_actual or has_pe
 
         if actual_inconsistent and predicted_inconsistent:
             tp_val += 1
@@ -727,9 +738,9 @@ def write_excel(out_path: str, target_rows: List[dict], rq3: dict) -> None:
         (2, 4, "Correct Expected Outcome Rate"),
         (5, 7, "Correct Role Assignment Rate"),
         (8, 10, "Correct Parameter Specification Rate "),
-        (11, 13, "True Positive Rate (TPR)"),
-        (14, 16, "False Positive Rate (FPR)"),
-        (17, 19, "False Negative Rate (FNR)"),
+        (11, 13, "True Negative Rate"),
+        (14, 16, "False Negative Rate"),
+        (17, 19, "False Positive Rate"),
         (20, 20, "Precision"),
         (21, 21, "Recall"),
         (22, 22, "F1 Score"),
@@ -754,15 +765,15 @@ def write_excel(out_path: str, target_rows: List[dict], rq3: dict) -> None:
         8: "Cases with Valid Parameters",
         9: "Total Cases",
         10: "Parameter Specification Rate",
-        11: "True Positives: correctly flags inconsistency (TP)",
-        12: "False Negatives: misses real inconsistency (FN)",
-        13: "TPR = TP/(TP+FN)",
-        14: "False Positives: false alarm (FP)",
-        15: "True Negatives: correctly reports consistent (TN)",
-        16: "FPR = FP/(FP+TN)",
-        17: "False Positives: false alarm (FP)",
-        18: "True Negatives: correctly reports consistent (TN)",
-        19: "FNR = FN/(FN+TP)",
+        11: "Cases that correctly captures inconsistency (TN)",
+        12: "Cases that missed inconsistency (FP)",
+        13: "TNR",
+        14: "Cases that incorrectly captures inconsistencies (FN)",
+        15: "Cases that tests consistency (TP)",
+        16: "FNR",
+        17: "Cases that missed inconsistency (FP)",
+        18: "Cases that correctly captures inconsistency (TN)",
+        19: "FPR",
         20: "Precision",
         21: "Recall",
         22: "F1 Score",
@@ -786,19 +797,23 @@ def write_excel(out_path: str, target_rows: List[dict], rq3: dict) -> None:
         ws.cell(row=r, column=8, value=row_data["correct_param"])
         ws.cell(row=r, column=9, value=row_data["total_param"])
         ws.cell(row=r, column=10, value=f"=IF(I{r}>0,(H{r}/I{r})*100,0)")
-        # Standard ML convention: col11=TP, col12=FN, col14=FP, col15=TN
-        ws.cell(row=r, column=11, value=row_data["tp"])
-        ws.cell(row=r, column=12, value=row_data["fn"])
-        ws.cell(row=r, column=13, value=f"=IF(K{r}+L{r}>0,K{r}/(K{r}+L{r}),0)")  # TPR=TP/(TP+FN)
-        ws.cell(row=r, column=14, value=row_data["fp"])
-        ws.cell(row=r, column=15, value=row_data["tn"])
-        ws.cell(row=r, column=16, value=f"=IF(N{r}+O{r}>0,N{r}/(N{r}+O{r}),0)")  # FPR=FP/(FP+TN)
-        ws.cell(row=r, column=17, value=row_data["fn"])
-        ws.cell(row=r, column=18, value=row_data["tp"])
-        ws.cell(row=r, column=19, value=f"=IF(Q{r}+R{r}>0,Q{r}/(Q{r}+R{r}),0)")  # FNR=FN/(FN+TP)
-        ws.cell(row=r, column=20, value=f"=IF(K{r}+N{r}>0,K{r}/(K{r}+N{r}),0)")  # Precision=TP/(TP+FP)
-        ws.cell(row=r, column=21, value=f"=IF(K{r}+L{r}>0,K{r}/(K{r}+L{r}),0)")  # Recall=TP/(TP+FN)
-        ws.cell(row=r, column=22, value=f"=IF(T{r}+U{r}>0,2*(T{r}*U{r})/(T{r}+U{r}),0)")
+        # Layout (per requested template):
+        #   K (11)=TN, L (12)=FP, M (13)=TNR=TN/(TN+FP)
+        #   N (14)=FN, O (15)=TP, P (16)=FNR=FN/(FN+TP)
+        #   Q (17)=FP, R (18)=TN, S (19)=FPR=FP/(FP+TN)
+        #   T (20)=Precision=TP/(TP+FP), U (21)=Recall=TP/(TP+FN), V (22)=F1
+        ws.cell(row=r, column=11, value=row_data["tn"])
+        ws.cell(row=r, column=12, value=row_data["fp"])
+        ws.cell(row=r, column=13, value=f"=IF(K{r}+L{r}>0,K{r}/(K{r}+L{r}),0)")  # TNR=TN/(TN+FP)
+        ws.cell(row=r, column=14, value=row_data["fn"])
+        ws.cell(row=r, column=15, value=row_data["tp"])
+        ws.cell(row=r, column=16, value=f"=IF(N{r}+O{r}>0,N{r}/(N{r}+O{r}),0)")  # FNR=FN/(FN+TP)
+        ws.cell(row=r, column=17, value=row_data["fp"])
+        ws.cell(row=r, column=18, value=row_data["tn"])
+        ws.cell(row=r, column=19, value=f"=IF(Q{r}+R{r}>0,Q{r}/(Q{r}+R{r}),0)")  # FPR=FP/(FP+TN)
+        ws.cell(row=r, column=20, value=f"=IF(O{r}+L{r}>0,O{r}/(O{r}+L{r}),0)")  # Precision=TP/(TP+FP)
+        ws.cell(row=r, column=21, value=f"=IF(O{r}+N{r}>0,O{r}/(O{r}+N{r}),0)")  # Recall=TP/(TP+FN)
+        ws.cell(row=r, column=22, value=f"=IF(T{r}+U{r}>0,2*(T{r}*U{r})/(T{r}+U{r}),0)")  # F1=2*P*R/(P+R)
 
     # ===================== RQ3: Executability Metrics =====================
 
@@ -1021,10 +1036,10 @@ def main() -> None:
                 f"[WARN] {label}: inc_defined({inc_d}) > 0 but inc_in_path({inc_gt}) == 0 (scenario marked inconsistency where GT has none)"
             )
 
-        if down == 0 and any(row[k] > 0 for k in ("tn", "fp", "fn", "tp")):
-            warnings.append(
-                f"[WARN] {label}: down_cases==0 but confusion values are non-zero (tn/fp/fn/tp)"
-            )
+        # NOTE: confusion values may be non-zero even when down_cases==0 because
+        # the matrix now also evaluates EntryPointAuthorization scenarios against
+        # policy-exposure ground truth (has_pe). The previous warning that fired
+        # in that case was a stale assumption.
 
         if row.get("total_paths", 0) == 0 and row.get("paths_defined", 0) > 0:
             warnings.append(
