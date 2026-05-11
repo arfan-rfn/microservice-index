@@ -29,6 +29,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -155,6 +156,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -278,7 +280,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -394,7 +399,9 @@
             }
           }
         ],
-        "policy_inconsistency_roles": []
+        "policy_inconsistency_roles": [
+          "PUBLIC"
+        ]
       }
     },
     "handles_pii": false,
@@ -433,6 +440,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -549,6 +557,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -656,6 +665,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -764,6 +774,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -883,6 +894,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -985,6 +997,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PII_RESTRICTED",
     "authorization": {
@@ -1093,6 +1106,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -1252,6 +1266,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -1355,6 +1370,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -1463,6 +1479,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -1573,6 +1590,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PII_RESTRICTED",
     "authorization": {
@@ -1737,6 +1755,7 @@
     "total_calls": 6,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -1878,6 +1897,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -1987,7 +2007,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_FINANCIAL_PUBLIC",
     "authorization": {
@@ -2123,6 +2146,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -2226,6 +2250,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -2341,7 +2366,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -2479,6 +2507,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -2587,6 +2616,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -2711,6 +2741,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -2872,7 +2903,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -2992,6 +3026,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -3100,6 +3135,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -3208,6 +3244,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -3372,6 +3409,24 @@
     "total_calls": 8,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {
+      "boundary_endpoint": "routeplanservice:9bd860f5db264e172266f6fcda9bbae5",
+      "unresolved_endpoints": [
+        "UNRESOLVED:/api/v1/routeservice/routes/{startstation}/{endstation}",
+        "travelservice:2de570663ecbee113e5d32735037077e",
+        "routeservice:1c6f73b5d6074dffef591530ff569021",
+        "trainservice:5d58dc81e6e847e5b9a8a3c0c5b625ab",
+        "seatservice:57a440f3a64a6603f5975a4f231005c1",
+        "configservice:883d51e960e760f688aadbe67260bf33"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ROLE_ADMIN",
+        "ROLE_USER"
+      ],
+      "roles_unresolvable": [],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -3474,6 +3529,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -3580,10 +3636,21 @@
     },
     "max_depth": 0,
     "total_calls": 1,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistencies": [
+      {
+        "role": "PUBLIC",
+        "type": "PolicyExposure",
+        "details": {
+          "reason": "Sensitive endpoint marked as PUBLIC (-1)"
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_PUBLIC",
+    "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_INTERNAL_PUBLIC",
     "authorization": {
       "required_roles": [
         "ROLE_ADMIN",
@@ -3628,7 +3695,7 @@
     "data_awareness_level": "LOW",
     "llm_prompt_type": "SIMPLE",
     "sensitivity_type": "INTERNAL",
-    "prompt_template_id": "entrypoint_status_matrix",
+    "prompt_template_id": "entrypoint_public_sensitive",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -3636,22 +3703,33 @@
       ],
       "prompt_type": "SIMPLE",
       "sensitivity": "INTERNAL",
-      "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_PUBLIC",
-      "template_id": "entrypoint_status_matrix",
+      "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_INTERNAL_PUBLIC",
+      "template_id": "entrypoint_public_sensitive",
       "parameters": {
         "scenario_id": "scn_configservice:d5cb226629e72c244f8eac0ea6f77e78",
         "endpoint": "/api/v1/configservice/welcome",
         "method": "GET",
         "service_name": "ts-config-service",
-        "allowed_roles": [
-          "ROLE_ADMIN",
-          "ROLE_USER"
-        ],
-        "denied_roles": [],
-        "expected_status_by_role": {
-          "ROLE_ADMIN": "2xx",
-          "ROLE_USER": "2xx"
-        }
+        "sensitivity_type": "INTERNAL",
+        "authorization": {
+          "required_roles": [
+            "ROLE_ADMIN",
+            "ROLE_USER"
+          ],
+          "source": "yaml",
+          "priority": null,
+          "scope_pattern": null,
+          "public": true
+        },
+        "policy_inconsistencies": [
+          {
+            "role": "PUBLIC",
+            "type": "PolicyExposure",
+            "details": {
+              "reason": "Sensitive endpoint marked as PUBLIC (-1)"
+            }
+          }
+        ]
       }
     },
     "handles_pii": false,
@@ -3690,6 +3768,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -3857,6 +3936,24 @@
     "total_calls": 7,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {
+      "boundary_endpoint": "cancelservice:0878acc834584246d0a824969af2c35e",
+      "unresolved_endpoints": [
+        "UNRESOLVED:/api/v1/orderservice/order/{order}",
+        "orderservice:b846949a108b0a333793d69932570d74",
+        "orderotherservice:c5457b4c874449d14503245a23a12cbd",
+        "deliveryservice:aea11163afc4d795de6af0a3618869a6",
+        "userservice:a81d71041fb51215a8ba45747c9eb819",
+        "orderotherservice:c952885a5a27c76ff1dde89a11aa2e98"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ROLE_ADMIN",
+        "ROLE_USER"
+      ],
+      "roles_unresolvable": [],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -4037,11 +4134,42 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "ROLE_USER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "adminrouteservice:7c6245303609cca6fbcd329b487e2985",
+          "downstream_endpoint": "routeservice:f2d4c8387a8c1dc40c4ede635a4d69b9",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "ROLE_USER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "adminrouteservice:7c6245303609cca6fbcd329b487e2985",
+          "downstream_endpoint": "travelservice:3eef992b7652123265190193174b9883",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "ROLE_USER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "adminrouteservice:7c6245303609cca6fbcd329b487e2985",
+          "downstream_endpoint": "travel2service:8a4fe8f0adb0d207f6c7b9b257043ac4",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -4111,6 +4239,36 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "ROLE_USER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "adminrouteservice:7c6245303609cca6fbcd329b487e2985",
+              "downstream_endpoint": "routeservice:f2d4c8387a8c1dc40c4ede635a4d69b9",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "ROLE_USER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "adminrouteservice:7c6245303609cca6fbcd329b487e2985",
+              "downstream_endpoint": "travelservice:3eef992b7652123265190193174b9883",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "ROLE_USER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "adminrouteservice:7c6245303609cca6fbcd329b487e2985",
+              "downstream_endpoint": "travel2service:8a4fe8f0adb0d207f6c7b9b257043ac4",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -4165,6 +4323,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -4267,6 +4426,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -4375,6 +4535,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -4625,6 +4786,7 @@
     "total_calls": 8,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -4758,6 +4920,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -4897,6 +5060,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -5043,7 +5207,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -5179,6 +5346,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -5282,6 +5450,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -5401,6 +5570,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -5525,6 +5695,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -5633,6 +5804,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -5736,6 +5908,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -5851,7 +6024,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -5971,6 +6147,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -6081,6 +6258,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -6242,6 +6420,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -6381,6 +6560,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -6489,6 +6669,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -6652,6 +6833,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -6755,6 +6937,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -6865,6 +7048,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -6968,6 +7152,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -7078,6 +7263,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -7234,6 +7420,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -7377,6 +7564,21 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {
+      "boundary_endpoint": "executeservice:22fda9bf8f1d9bd7dfe31d9d66b1138a",
+      "unresolved_endpoints": [
+        "UNRESOLVED:/api/v1/orderservice/order/{order}",
+        "orderservice:d959f7cc57ab3363640acc524c5a5ebb",
+        "orderotherservice:713bb454d6419f20ffcfd2707acd4c73"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ROLE_ADMIN",
+        "ROLE_USER"
+      ],
+      "roles_unresolvable": [],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -7550,18 +7752,29 @@
       },
       {
         "role": "ROLE_USER",
-        "type": "UnderPermissiveDownstream",
+        "type": "OverPermissiveDownstream",
         "details": {
-          "upstream_endpoint": "routeservice:1c6f73b5d6074dffef591530ff569021",
-          "downstream_endpoint": "travelservice:650375bd4b6277d2c4c8668cf64e9f29",
-          "upstream_value": 1,
-          "downstream_value": 0
+          "upstream_endpoint": "admintravelservice:e29836be2fb95d6b8f87aefd87f97fd1",
+          "downstream_endpoint": "trainservice:5d58dc81e6e847e5b9a8a3c0c5b625ab",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "ROLE_USER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "admintravelservice:e29836be2fb95d6b8f87aefd87f97fd1",
+          "downstream_endpoint": "routeservice:1c6f73b5d6074dffef591530ff569021",
+          "upstream_value": 0,
+          "downstream_value": 1
         }
       }
     ],
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -7634,12 +7847,22 @@
           },
           {
             "role": "ROLE_USER",
-            "type": "UnderPermissiveDownstream",
+            "type": "OverPermissiveDownstream",
             "details": {
-              "upstream_endpoint": "routeservice:1c6f73b5d6074dffef591530ff569021",
-              "downstream_endpoint": "travelservice:650375bd4b6277d2c4c8668cf64e9f29",
-              "upstream_value": 1,
-              "downstream_value": 0
+              "upstream_endpoint": "admintravelservice:e29836be2fb95d6b8f87aefd87f97fd1",
+              "downstream_endpoint": "trainservice:5d58dc81e6e847e5b9a8a3c0c5b625ab",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "ROLE_USER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "admintravelservice:e29836be2fb95d6b8f87aefd87f97fd1",
+              "downstream_endpoint": "routeservice:1c6f73b5d6074dffef591530ff569021",
+              "upstream_value": 0,
+              "downstream_value": 1
             }
           }
         ],
@@ -7686,6 +7909,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -7791,6 +8015,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -7894,6 +8119,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -8004,6 +8230,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -8109,6 +8336,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -8212,6 +8440,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -8320,6 +8549,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -8444,6 +8674,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -8549,6 +8780,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -8781,6 +9013,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -8889,6 +9122,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -9013,6 +9247,7 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -9115,6 +9350,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -9225,6 +9461,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PII_RESTRICTED",
     "authorization": {
@@ -9328,6 +9565,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -9438,6 +9676,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -9546,6 +9785,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -9656,6 +9896,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -9812,6 +10053,7 @@
     "total_calls": 5,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -9919,6 +10161,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -10043,6 +10286,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -10167,6 +10411,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -10275,6 +10520,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -10399,6 +10645,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -10539,6 +10786,7 @@
     "total_calls": 5,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -10644,10 +10892,21 @@
     },
     "max_depth": 0,
     "total_calls": 1,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistencies": [
+      {
+        "role": "PUBLIC",
+        "type": "PolicyExposure",
+        "details": {
+          "reason": "Sensitive endpoint marked as PUBLIC (-1)"
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_PUBLIC",
+    "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_INTERNAL_PUBLIC",
     "authorization": {
       "required_roles": [
         "ROLE_ADMIN",
@@ -10692,7 +10951,7 @@
     "data_awareness_level": "LOW",
     "llm_prompt_type": "SIMPLE",
     "sensitivity_type": "INTERNAL",
-    "prompt_template_id": "entrypoint_status_matrix",
+    "prompt_template_id": "entrypoint_public_sensitive",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -10700,22 +10959,33 @@
       ],
       "prompt_type": "SIMPLE",
       "sensitivity": "INTERNAL",
-      "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_PUBLIC",
-      "template_id": "entrypoint_status_matrix",
+      "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_INTERNAL_PUBLIC",
+      "template_id": "entrypoint_public_sensitive",
       "parameters": {
         "scenario_id": "scn_travelservice:3837bb41130de235403d5b320dbe09db",
         "endpoint": "/api/v1/travelservice/admin_trip",
         "method": "GET",
         "service_name": "ts-travel-service",
-        "allowed_roles": [
-          "ROLE_ADMIN",
-          "ROLE_USER"
-        ],
-        "denied_roles": [],
-        "expected_status_by_role": {
-          "ROLE_ADMIN": "2xx",
-          "ROLE_USER": "2xx"
-        }
+        "sensitivity_type": "INTERNAL",
+        "authorization": {
+          "required_roles": [
+            "ROLE_ADMIN",
+            "ROLE_USER"
+          ],
+          "source": "yaml",
+          "priority": null,
+          "scope_pattern": null,
+          "public": true
+        },
+        "policy_inconsistencies": [
+          {
+            "role": "PUBLIC",
+            "type": "PolicyExposure",
+            "details": {
+              "reason": "Sensitive endpoint marked as PUBLIC (-1)"
+            }
+          }
+        ]
       }
     },
     "handles_pii": false,
@@ -10754,6 +11024,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -10852,11 +11123,13 @@
     "allowed_roles": [
       "ROLE_ADMIN"
     ],
-    "denied_roles": [],
+    "denied_roles": [
+      "ROLE_USER"
+    ],
     "unknown_roles": [],
     "expected_status_by_role": {
       "ROLE_ADMIN": "2xx",
-      "ROLE_USER": "2xx"
+      "ROLE_USER": "403"
     },
     "chain_permissions": {
       "preserveservice:fbb390ff0f653ca58e11358f012aefd8": {
@@ -11004,28 +11277,19 @@
         "role": "ROLE_USER",
         "type": "UnderPermissiveDownstream",
         "details": {
-          "upstream_endpoint": "orderotherservice:c7b6f607fe84a3b88a2bfac24c1292d7",
+          "upstream_endpoint": "preserveservice:fbb390ff0f653ca58e11358f012aefd8",
           "downstream_endpoint": "contactservice:e89605fb717241a8b0b39ac0d6bb0c84",
           "upstream_value": 1,
           "downstream_value": 0
-        }
-      },
-      {
-        "role": "ROLE_USER",
-        "type": "OverPermissiveDownstream",
-        "details": {
-          "upstream_endpoint": "contactservice:e89605fb717241a8b0b39ac0d6bb0c84",
-          "downstream_endpoint": "travel2service:b30e9d214c6730447f9311cca9f251f3",
-          "upstream_value": 0,
-          "downstream_value": 1
         }
       }
     ],
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
-    "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
+    "scenario_category": "DOWNSTREAM_UNDER_PERMISSIVE_PUBLIC_RESTRICTED",
     "authorization": {
       "required_roles": [
         "ROLE_ADMIN"
@@ -11180,7 +11444,7 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PUBLIC",
-      "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED",
+      "scenario_category": "DOWNSTREAM_UNDER_PERMISSIVE_PUBLIC_RESTRICTED",
       "template_id": "downstream_inconsistency_cot",
       "parameters": {
         "scenario_id": "scn_preserveservice:fbb390ff0f653ca58e11358f012aefd8",
@@ -11194,20 +11458,10 @@
             "role": "ROLE_USER",
             "type": "UnderPermissiveDownstream",
             "details": {
-              "upstream_endpoint": "orderotherservice:c7b6f607fe84a3b88a2bfac24c1292d7",
+              "upstream_endpoint": "preserveservice:fbb390ff0f653ca58e11358f012aefd8",
               "downstream_endpoint": "contactservice:e89605fb717241a8b0b39ac0d6bb0c84",
               "upstream_value": 1,
               "downstream_value": 0
-            }
-          },
-          {
-            "role": "ROLE_USER",
-            "type": "OverPermissiveDownstream",
-            "details": {
-              "upstream_endpoint": "contactservice:e89605fb717241a8b0b39ac0d6bb0c84",
-              "downstream_endpoint": "travel2service:b30e9d214c6730447f9311cca9f251f3",
-              "upstream_value": 0,
-              "downstream_value": 1
             }
           }
         ],
@@ -11252,6 +11506,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -11399,6 +11654,7 @@
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -11511,6 +11767,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -11626,7 +11883,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -11762,6 +12022,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -11872,6 +12133,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -12104,6 +12366,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -12235,7 +12498,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -12386,6 +12652,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -12542,6 +12809,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -12652,6 +12920,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -12768,6 +13037,19 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {
+      "boundary_endpoint": "userservice:ecf0e6c69b9d7da50a5f21848e279eba",
+      "unresolved_endpoints": [
+        "UNRESOLVED:/users/{user}"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ROLE_ADMIN",
+        "ROLE_USER"
+      ],
+      "roles_unresolvable": [],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PII_RESTRICTED",
     "authorization": {
@@ -12899,6 +13181,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -13001,6 +13284,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -13132,6 +13416,7 @@
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -13260,6 +13545,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -13368,6 +13654,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -13600,6 +13887,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -13719,6 +14007,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -13819,6 +14108,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -13943,6 +14233,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -14129,6 +14420,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -14253,6 +14545,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -14404,6 +14697,7 @@
     "total_calls": 7,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -14508,6 +14802,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -14639,7 +14934,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -14790,6 +15088,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -14906,10 +15205,39 @@
     },
     "max_depth": 1,
     "total_calls": 2,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
-    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "DOWNSTREAM_CONSISTENT_PII_RESTRICTED",
+    "policy_inconsistencies": [
+      {
+        "role": "ROLE_USER",
+        "type": "UnresolvedDownstream",
+        "details": {
+          "boundary_endpoint": "adminuserservice:11afe2f7dd6136a9232c68a238f3f2c1",
+          "unresolved_endpoints": [
+            "UNRESOLVED:/{user}"
+          ],
+          "boundary_value": 0,
+          "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "ROLE_USER"
+    ],
+    "unresolved_boundary": {
+      "boundary_endpoint": "adminuserservice:11afe2f7dd6136a9232c68a238f3f2c1",
+      "unresolved_endpoints": [
+        "UNRESOLVED:/{user}"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ROLE_ADMIN"
+      ],
+      "roles_unresolvable": [
+        "ROLE_USER"
+      ],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
+    "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
+    "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PII_RESTRICTED",
     "authorization": {
       "required_roles": [
         "ROLE_ADMIN"
@@ -14964,7 +15292,7 @@
     "data_awareness_level": "HIGH",
     "llm_prompt_type": "CHAIN_OF_THOUGHT",
     "sensitivity_type": "PII",
-    "prompt_template_id": "downstream_consistent_path",
+    "prompt_template_id": "downstream_inconsistency_cot",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -14974,8 +15302,8 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PII",
-      "scenario_category": "DOWNSTREAM_CONSISTENT_PII_RESTRICTED",
-      "template_id": "downstream_consistent_path",
+      "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PII_RESTRICTED",
+      "template_id": "downstream_inconsistency_cot",
       "parameters": {
         "scenario_id": "scn_adminuserservice:11afe2f7dd6136a9232c68a238f3f2c1",
         "service_name": "ts-adminuser-service",
@@ -14983,8 +15311,22 @@
         "method": "DELETE",
         "max_depth": 1,
         "total_calls": 2,
-        "allowed_roles": [
-          "ROLE_ADMIN"
+        "policy_inconsistencies": [
+          {
+            "role": "ROLE_USER",
+            "type": "UnresolvedDownstream",
+            "details": {
+              "boundary_endpoint": "adminuserservice:11afe2f7dd6136a9232c68a238f3f2c1",
+              "unresolved_endpoints": [
+                "UNRESOLVED:/{user}"
+              ],
+              "boundary_value": 0,
+              "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+            }
+          }
+        ],
+        "policy_inconsistency_roles": [
+          "ROLE_USER"
         ]
       }
     },
@@ -15024,6 +15366,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -15132,6 +15475,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -15263,6 +15607,7 @@
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -15391,6 +15736,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -15499,6 +15845,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -15731,6 +16078,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -15813,11 +16161,13 @@
     "allowed_roles": [
       "ROLE_ADMIN"
     ],
-    "denied_roles": [],
+    "denied_roles": [
+      "ROLE_USER"
+    ],
     "unknown_roles": [],
     "expected_status_by_role": {
       "ROLE_ADMIN": "2xx",
-      "ROLE_USER": "2xx"
+      "ROLE_USER": "403"
     },
     "chain_permissions": {
       "adminbasicservice:f05a83f69ebd07c5401f7a8d354eddf9": {
@@ -15855,6 +16205,7 @@
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_UNDER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -15983,6 +16334,7 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PII_RESTRICTED",
     "authorization": {
@@ -16108,6 +16460,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -16216,6 +16569,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -16381,6 +16735,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -16489,6 +16844,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -16613,6 +16969,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -16729,6 +17086,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -16829,10 +17187,21 @@
     },
     "max_depth": 0,
     "total_calls": 1,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistencies": [
+      {
+        "role": "PUBLIC",
+        "type": "PolicyExposure",
+        "details": {
+          "reason": "Sensitive endpoint marked as PUBLIC (-1)"
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_PUBLIC",
+    "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_INTERNAL_PUBLIC",
     "authorization": {
       "required_roles": [
         "ROLE_ADMIN",
@@ -16877,7 +17246,7 @@
     "data_awareness_level": "LOW",
     "llm_prompt_type": "SIMPLE",
     "sensitivity_type": "INTERNAL",
-    "prompt_template_id": "entrypoint_status_matrix",
+    "prompt_template_id": "entrypoint_public_sensitive",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -16885,22 +17254,33 @@
       ],
       "prompt_type": "SIMPLE",
       "sensitivity": "INTERNAL",
-      "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_PUBLIC",
-      "template_id": "entrypoint_status_matrix",
+      "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_INTERNAL_PUBLIC",
+      "template_id": "entrypoint_public_sensitive",
       "parameters": {
         "scenario_id": "scn_configservice:4fb0fbe2b58c970759b8f3bafc040e4a",
         "endpoint": "/api/v1/configservice/configs",
         "method": "GET",
         "service_name": "ts-config-service",
-        "allowed_roles": [
-          "ROLE_ADMIN",
-          "ROLE_USER"
-        ],
-        "denied_roles": [],
-        "expected_status_by_role": {
-          "ROLE_ADMIN": "2xx",
-          "ROLE_USER": "2xx"
-        }
+        "sensitivity_type": "INTERNAL",
+        "authorization": {
+          "required_roles": [
+            "ROLE_ADMIN",
+            "ROLE_USER"
+          ],
+          "source": "yaml",
+          "priority": null,
+          "scope_pattern": null,
+          "public": true
+        },
+        "policy_inconsistencies": [
+          {
+            "role": "PUBLIC",
+            "type": "PolicyExposure",
+            "details": {
+              "reason": "Sensitive endpoint marked as PUBLIC (-1)"
+            }
+          }
+        ]
       }
     },
     "handles_pii": false,
@@ -16950,6 +17330,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -17057,7 +17438,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -17203,6 +17587,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -17351,6 +17736,7 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -17519,6 +17905,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -17627,6 +18014,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -17742,7 +18130,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -17905,6 +18296,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -18029,6 +18421,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -18153,6 +18546,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -18277,6 +18671,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -18392,7 +18787,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -18512,6 +18910,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -18838,6 +19237,22 @@
     "total_calls": 17,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {
+      "boundary_endpoint": "seatservice:99f639d13471c7f245435434f244da89",
+      "unresolved_endpoints": [
+        "UNRESOLVED:/api/v1/orderservice/order/{orderId}",
+        "UNRESOLVED:/api/v1/orderOtherService/orderOther/{orderId}",
+        "orderservice:b2e2a1e495d5c8a9e5070a7da692cc4a",
+        "orderotherservice:9995eb9806fc9fa9b74b483129ce3dd8"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ROLE_ADMIN",
+        "ROLE_USER"
+      ],
+      "roles_unresolvable": [],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -19035,6 +19450,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PII_RESTRICTED",
     "authorization": {
@@ -19159,6 +19575,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -19299,6 +19716,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -19399,6 +19817,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -19505,10 +19924,21 @@
     },
     "max_depth": 0,
     "total_calls": 1,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistencies": [
+      {
+        "role": "PUBLIC",
+        "type": "PolicyExposure",
+        "details": {
+          "reason": "Sensitive endpoint marked as PUBLIC (-1)"
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_PUBLIC",
+    "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_INTERNAL_PUBLIC",
     "authorization": {
       "required_roles": [
         "ROLE_ADMIN",
@@ -19569,7 +19999,7 @@
     "data_awareness_level": "LOW",
     "llm_prompt_type": "SIMPLE",
     "sensitivity_type": "INTERNAL",
-    "prompt_template_id": "entrypoint_status_matrix",
+    "prompt_template_id": "entrypoint_public_sensitive",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -19577,22 +20007,33 @@
       ],
       "prompt_type": "SIMPLE",
       "sensitivity": "INTERNAL",
-      "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_PUBLIC",
-      "template_id": "entrypoint_status_matrix",
+      "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_INTERNAL_PUBLIC",
+      "template_id": "entrypoint_public_sensitive",
       "parameters": {
         "scenario_id": "scn_configservice:883d51e960e760f688aadbe67260bf33",
         "endpoint": "/api/v1/configservice/configs/{configName}",
         "method": "GET",
         "service_name": "ts-config-service",
-        "allowed_roles": [
-          "ROLE_ADMIN",
-          "ROLE_USER"
-        ],
-        "denied_roles": [],
-        "expected_status_by_role": {
-          "ROLE_ADMIN": "2xx",
-          "ROLE_USER": "2xx"
-        }
+        "sensitivity_type": "INTERNAL",
+        "authorization": {
+          "required_roles": [
+            "ROLE_ADMIN",
+            "ROLE_USER"
+          ],
+          "source": "yaml",
+          "priority": null,
+          "scope_pattern": null,
+          "public": true
+        },
+        "policy_inconsistencies": [
+          {
+            "role": "PUBLIC",
+            "type": "PolicyExposure",
+            "details": {
+              "reason": "Sensitive endpoint marked as PUBLIC (-1)"
+            }
+          }
+        ]
       }
     },
     "handles_pii": false,
@@ -19631,6 +20072,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -19755,6 +20197,7 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -19857,6 +20300,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -19996,6 +20440,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -20135,6 +20580,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -20238,6 +20684,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -20346,6 +20793,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -20465,6 +20913,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -20567,6 +21016,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -20677,6 +21127,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -20811,6 +21262,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -20939,6 +21391,7 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -21039,6 +21492,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -21163,6 +21617,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -21271,6 +21726,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -21395,6 +21851,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -21524,11 +21981,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "ROLE_USER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "adminorderservice:54e009bc1164ed3119fbf2eb2515920d",
+          "downstream_endpoint": "orderotherservice:bf4c5f596ad16c45dff3e80f1ab4b4de",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -21629,6 +22097,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "ROLE_USER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "adminorderservice:54e009bc1164ed3119fbf2eb2515920d",
+              "downstream_endpoint": "orderotherservice:bf4c5f596ad16c45dff3e80f1ab4b4de",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -21683,6 +22161,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -21783,6 +22262,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -21907,6 +22387,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -22012,6 +22493,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -22173,6 +22655,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -22281,6 +22764,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -22467,6 +22951,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -22578,6 +23063,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -22682,6 +23168,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -22813,6 +23300,7 @@
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -22925,6 +23413,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -23064,6 +23553,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -23188,6 +23678,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -23322,11 +23813,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "ROLE_USER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "admintravelservice:4cb90ff87405f328aea4e853420f7306",
+          "downstream_endpoint": "travel2service:b30acb6a1f8be96b39b222a28e2e6b8f",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -23396,6 +23898,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "ROLE_USER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "admintravelservice:4cb90ff87405f328aea4e853420f7306",
+              "downstream_endpoint": "travel2service:b30acb6a1f8be96b39b222a28e2e6b8f",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -23439,6 +23951,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -23547,6 +24060,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -23650,6 +24164,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -23790,6 +24305,20 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {
+      "boundary_endpoint": "cancelservice:acb30fc5d68aeb9ac751c7b369486bb8",
+      "unresolved_endpoints": [
+        "UNRESOLVED:/api/v1/orderservice/order/{order}",
+        "orderotherservice:c5457b4c874449d14503245a23a12cbd"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ROLE_ADMIN",
+        "ROLE_USER"
+      ],
+      "roles_unresolvable": [],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -23933,6 +24462,7 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -24033,6 +24563,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -24165,6 +24696,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -24293,11 +24825,22 @@
           "upstream_value": 0,
           "downstream_value": 1
         }
+      },
+      {
+        "role": "ROLE_USER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "adminorderservice:b09a709e404ce6f12680e578e105a29c",
+          "downstream_endpoint": "orderotherservice:fc2685b2a15382a2c09a7ce6f4e77fe9",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
       }
     ],
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -24367,6 +24910,16 @@
               "upstream_value": 0,
               "downstream_value": 1
             }
+          },
+          {
+            "role": "ROLE_USER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "adminorderservice:b09a709e404ce6f12680e578e105a29c",
+              "downstream_endpoint": "orderotherservice:fc2685b2a15382a2c09a7ce6f4e77fe9",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
           }
         ],
         "policy_inconsistency_roles": [
@@ -24417,7 +24970,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC",
     "authorization": {
@@ -24561,10 +25117,39 @@
     },
     "max_depth": 1,
     "total_calls": 2,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
-    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "DOWNSTREAM_CONSISTENT_PII_RESTRICTED",
+    "policy_inconsistencies": [
+      {
+        "role": "ROLE_USER",
+        "type": "UnresolvedDownstream",
+        "details": {
+          "boundary_endpoint": "adminuserservice:85d4eae6a44d78df33005e57748e6a99",
+          "unresolved_endpoints": [
+            "UNRESOLVED:/register"
+          ],
+          "boundary_value": 0,
+          "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "ROLE_USER"
+    ],
+    "unresolved_boundary": {
+      "boundary_endpoint": "adminuserservice:85d4eae6a44d78df33005e57748e6a99",
+      "unresolved_endpoints": [
+        "UNRESOLVED:/register"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ROLE_ADMIN"
+      ],
+      "roles_unresolvable": [
+        "ROLE_USER"
+      ],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
+    "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
+    "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PII_RESTRICTED",
     "authorization": {
       "required_roles": [
         "ROLE_ADMIN"
@@ -24603,7 +25188,7 @@
     "data_awareness_level": "HIGH",
     "llm_prompt_type": "CHAIN_OF_THOUGHT",
     "sensitivity_type": "PII",
-    "prompt_template_id": "downstream_consistent_path",
+    "prompt_template_id": "downstream_inconsistency_cot",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -24613,8 +25198,8 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PII",
-      "scenario_category": "DOWNSTREAM_CONSISTENT_PII_RESTRICTED",
-      "template_id": "downstream_consistent_path",
+      "scenario_category": "DOWNSTREAM_ROLE_MISMATCH_PII_RESTRICTED",
+      "template_id": "downstream_inconsistency_cot",
       "parameters": {
         "scenario_id": "scn_adminuserservice:85d4eae6a44d78df33005e57748e6a99",
         "service_name": "ts-adminuser-service",
@@ -24622,8 +25207,22 @@
         "method": "POST",
         "max_depth": 1,
         "total_calls": 2,
-        "allowed_roles": [
-          "ROLE_ADMIN"
+        "policy_inconsistencies": [
+          {
+            "role": "ROLE_USER",
+            "type": "UnresolvedDownstream",
+            "details": {
+              "boundary_endpoint": "adminuserservice:85d4eae6a44d78df33005e57748e6a99",
+              "unresolved_endpoints": [
+                "UNRESOLVED:/register"
+              ],
+              "boundary_value": 0,
+              "reason": "Role denied at boundary endpoint; downstream behavior inside the unresolved block cannot be statically resolved."
+            }
+          }
+        ],
+        "policy_inconsistency_roles": [
+          "ROLE_USER"
         ]
       }
     },
@@ -24663,6 +25262,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -24773,6 +25373,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -24938,6 +25539,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PII_RESTRICTED",
     "authorization": {
@@ -25062,6 +25664,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -25218,6 +25821,7 @@
     "total_calls": 7,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -25343,6 +25947,7 @@
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -25471,6 +26076,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -25582,6 +26188,19 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {
+      "boundary_endpoint": "travelservice:bb176cd1098f0701af47be71c7054441",
+      "unresolved_endpoints": [
+        "UNRESOLVED:UNKNOWN"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ROLE_ADMIN",
+        "ROLE_USER"
+      ],
+      "roles_unresolvable": [],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -25739,6 +26358,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -25879,6 +26499,7 @@
     "total_calls": 3,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -26017,6 +26638,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -26138,6 +26760,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -26241,6 +26864,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -26356,7 +26980,10 @@
         }
       }
     ],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_FINANCIAL_PUBLIC",
     "authorization": {
@@ -26516,6 +27143,21 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {
+      "boundary_endpoint": "executeservice:62fc1bb5241b7bfd4c4995fa45593f37",
+      "unresolved_endpoints": [
+        "UNRESOLVED:/api/v1/orderservice/order/{order}",
+        "orderservice:d959f7cc57ab3363640acc524c5a5ebb",
+        "orderotherservice:713bb454d6419f20ffcfd2707acd4c73"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ROLE_ADMIN",
+        "ROLE_USER"
+      ],
+      "roles_unresolvable": [],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -26645,6 +27287,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -26745,6 +27388,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -26911,6 +27555,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -27016,6 +27661,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -27122,10 +27768,21 @@
     },
     "max_depth": 0,
     "total_calls": 1,
-    "policy_inconsistencies": [],
-    "policy_inconsistency_roles": [],
+    "policy_inconsistencies": [
+      {
+        "role": "PUBLIC",
+        "type": "PolicyExposure",
+        "details": {
+          "reason": "Sensitive endpoint marked as PUBLIC (-1)"
+        }
+      }
+    ],
+    "policy_inconsistency_roles": [
+      "PUBLIC"
+    ],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
-    "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_PUBLIC",
+    "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_INTERNAL_PUBLIC",
     "authorization": {
       "required_roles": [
         "ROLE_ADMIN",
@@ -27170,7 +27827,7 @@
     "data_awareness_level": "LOW",
     "llm_prompt_type": "SIMPLE",
     "sensitivity_type": "INTERNAL",
-    "prompt_template_id": "entrypoint_status_matrix",
+    "prompt_template_id": "entrypoint_public_sensitive",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -27178,22 +27835,33 @@
       ],
       "prompt_type": "SIMPLE",
       "sensitivity": "INTERNAL",
-      "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_PUBLIC",
-      "template_id": "entrypoint_status_matrix",
+      "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_INTERNAL_PUBLIC",
+      "template_id": "entrypoint_public_sensitive",
       "parameters": {
         "scenario_id": "scn_travel2service:b30acb6a1f8be96b39b222a28e2e6b8f",
         "endpoint": "/api/v1/travel2service/admin_trip",
         "method": "GET",
         "service_name": "ts-travel2-service",
-        "allowed_roles": [
-          "ROLE_ADMIN",
-          "ROLE_USER"
-        ],
-        "denied_roles": [],
-        "expected_status_by_role": {
-          "ROLE_ADMIN": "2xx",
-          "ROLE_USER": "2xx"
-        }
+        "sensitivity_type": "INTERNAL",
+        "authorization": {
+          "required_roles": [
+            "ROLE_ADMIN",
+            "ROLE_USER"
+          ],
+          "source": "yaml",
+          "priority": null,
+          "scope_pattern": null,
+          "public": true
+        },
+        "policy_inconsistencies": [
+          {
+            "role": "PUBLIC",
+            "type": "PolicyExposure",
+            "details": {
+              "reason": "Sensitive endpoint marked as PUBLIC (-1)"
+            }
+          }
+        ]
       }
     },
     "handles_pii": false,
@@ -27232,6 +27900,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -27356,6 +28025,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -27475,6 +28145,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -27583,6 +28254,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -27707,6 +28379,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -27815,6 +28488,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -27925,6 +28599,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -28057,6 +28732,21 @@
     "total_calls": 4,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {
+      "boundary_endpoint": "routeplanservice:9bd860f5db264e172266f6fcda9bbae5",
+      "unresolved_endpoints": [
+        "UNRESOLVED:/api/v1/routeservice/routes/{startstation}/{endstation}",
+        "travelservice:2de570663ecbee113e5d32735037077e",
+        "routeservice:1c6f73b5d6074dffef591530ff569021"
+      ],
+      "roles_requiring_runtime_tests": [
+        "ROLE_ADMIN",
+        "ROLE_USER"
+      ],
+      "roles_unresolvable": [],
+      "roles_unknown_at_boundary": [],
+      "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
+    },
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -28159,6 +28849,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -28267,6 +28958,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -28370,6 +29062,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -28473,6 +29166,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -28642,6 +29336,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_FINANCIAL_RESTRICTED",
     "authorization": {
@@ -28775,6 +29470,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -28901,6 +29597,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -29060,6 +29757,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -29168,6 +29866,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -29299,6 +29998,7 @@
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PII_RESTRICTED",
     "authorization": {
@@ -29411,6 +30111,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -29546,6 +30247,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -29664,6 +30366,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -29788,6 +30491,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -29896,6 +30600,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -30006,6 +30711,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -30170,6 +30876,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -30316,6 +31023,7 @@
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_PII_RESTRICTED",
     "authorization": {
@@ -30430,6 +31138,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -30554,6 +31263,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -30662,6 +31372,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -30792,7 +31503,7 @@
         "role": "ROLE_USER",
         "type": "OverPermissiveDownstream",
         "details": {
-          "upstream_endpoint": "travelservice:8e458c0e6e62a6734860ba1550b0419b",
+          "upstream_endpoint": "admintravelservice:a0e43a047f7eb55051285800bf50c048",
           "downstream_endpoint": "travel2service:8070ab2b9ef6c4f95fcad847611b268d",
           "upstream_value": 0,
           "downstream_value": 1
@@ -30802,6 +31513,7 @@
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -30882,7 +31594,7 @@
             "role": "ROLE_USER",
             "type": "OverPermissiveDownstream",
             "details": {
-              "upstream_endpoint": "travelservice:8e458c0e6e62a6734860ba1550b0419b",
+              "upstream_endpoint": "admintravelservice:a0e43a047f7eb55051285800bf50c048",
               "downstream_endpoint": "travel2service:8070ab2b9ef6c4f95fcad847611b268d",
               "upstream_value": 0,
               "downstream_value": 1
@@ -30930,6 +31642,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -31033,6 +31746,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -31136,6 +31850,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -31298,18 +32013,39 @@
       },
       {
         "role": "ROLE_USER",
-        "type": "UnderPermissiveDownstream",
+        "type": "OverPermissiveDownstream",
         "details": {
-          "upstream_endpoint": "travelservice:999a422e5a75af6ad1fb836e812a038b",
-          "downstream_endpoint": "travel2service:064e6daaa4ced445f1a0d6db17d9c7c1",
-          "upstream_value": 1,
-          "downstream_value": 0
+          "upstream_endpoint": "admintravelservice:a56b55bd5d8c8d5588afb3bff11280f9",
+          "downstream_endpoint": "trainservice:5d58dc81e6e847e5b9a8a3c0c5b625ab",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "ROLE_USER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "admintravelservice:a56b55bd5d8c8d5588afb3bff11280f9",
+          "downstream_endpoint": "routeservice:1c6f73b5d6074dffef591530ff569021",
+          "upstream_value": 0,
+          "downstream_value": 1
+        }
+      },
+      {
+        "role": "ROLE_USER",
+        "type": "OverPermissiveDownstream",
+        "details": {
+          "upstream_endpoint": "admintravelservice:a56b55bd5d8c8d5588afb3bff11280f9",
+          "downstream_endpoint": "travelservice:999a422e5a75af6ad1fb836e812a038b",
+          "upstream_value": 0,
+          "downstream_value": 1
         }
       }
     ],
     "policy_inconsistency_roles": [
       "ROLE_USER"
     ],
+    "unresolved_boundary": {},
     "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
     "scenario_category": "DOWNSTREAM_OVER_PERMISSIVE_INTERNAL_RESTRICTED",
     "authorization": {
@@ -31382,12 +32118,32 @@
           },
           {
             "role": "ROLE_USER",
-            "type": "UnderPermissiveDownstream",
+            "type": "OverPermissiveDownstream",
             "details": {
-              "upstream_endpoint": "travelservice:999a422e5a75af6ad1fb836e812a038b",
-              "downstream_endpoint": "travel2service:064e6daaa4ced445f1a0d6db17d9c7c1",
-              "upstream_value": 1,
-              "downstream_value": 0
+              "upstream_endpoint": "admintravelservice:a56b55bd5d8c8d5588afb3bff11280f9",
+              "downstream_endpoint": "trainservice:5d58dc81e6e847e5b9a8a3c0c5b625ab",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "ROLE_USER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "admintravelservice:a56b55bd5d8c8d5588afb3bff11280f9",
+              "downstream_endpoint": "routeservice:1c6f73b5d6074dffef591530ff569021",
+              "upstream_value": 0,
+              "downstream_value": 1
+            }
+          },
+          {
+            "role": "ROLE_USER",
+            "type": "OverPermissiveDownstream",
+            "details": {
+              "upstream_endpoint": "admintravelservice:a56b55bd5d8c8d5588afb3bff11280f9",
+              "downstream_endpoint": "travelservice:999a422e5a75af6ad1fb836e812a038b",
+              "upstream_value": 0,
+              "downstream_value": 1
             }
           }
         ],
@@ -31443,6 +32199,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -31545,6 +32302,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -31659,6 +32417,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -31775,6 +32534,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -31910,6 +32670,7 @@
     "total_calls": 2,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -32026,6 +32787,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -32134,6 +32896,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -32258,6 +33021,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -32397,6 +33161,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -32523,6 +33288,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -32689,6 +33455,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
@@ -32813,6 +33580,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {
@@ -32921,6 +33689,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED",
     "authorization": {
@@ -33047,6 +33816,7 @@
     "total_calls": 1,
     "policy_inconsistencies": [],
     "policy_inconsistency_roles": [],
+    "unresolved_boundary": {},
     "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "ENTRYPOINT_CONSISTENT_INTERNAL_RESTRICTED",
     "authorization": {

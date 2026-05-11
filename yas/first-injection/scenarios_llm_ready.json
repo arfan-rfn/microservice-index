@@ -10134,22 +10134,11 @@
     },
     "max_depth": 1,
     "total_calls": 3,
-    "policy_inconsistencies": [
-      {
-        "role": "PUBLIC",
-        "type": "PolicyExposure",
-        "details": {
-          "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
-          "endpoint": "payment:b6224b0f0b8685e70a3ba99d1f9ba060"
-        }
-      }
-    ],
-    "policy_inconsistency_roles": [
-      "PUBLIC"
-    ],
+    "policy_inconsistencies": [],
+    "policy_inconsistency_roles": [],
     "unresolved_boundary": {},
-    "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
-    "scenario_category": "DOWNSTREAM_POLICY_EXPOSURE_PUBLIC_PUBLIC",
+    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
+    "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
       "required_roles": [
         "SUPER-ADMIN",
@@ -10196,7 +10185,7 @@
     "data_awareness_level": "HIGH",
     "llm_prompt_type": "CHAIN_OF_THOUGHT",
     "sensitivity_type": "PUBLIC",
-    "prompt_template_id": "downstream_inconsistency_cot",
+    "prompt_template_id": "downstream_consistent_path",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -10206,8 +10195,8 @@
       ],
       "prompt_type": "CHAIN_OF_THOUGHT",
       "sensitivity": "PUBLIC",
-      "scenario_category": "DOWNSTREAM_POLICY_EXPOSURE_PUBLIC_PUBLIC",
-      "template_id": "downstream_inconsistency_cot",
+      "scenario_category": "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC",
+      "template_id": "downstream_consistent_path",
       "parameters": {
         "scenario_id": "scn_payment:b6224b0f0b8685e70a3ba99d1f9ba060",
         "service_name": "payment",
@@ -10215,18 +10204,11 @@
         "method": "POST",
         "max_depth": 1,
         "total_calls": 3,
-        "policy_inconsistencies": [
-          {
-            "role": "PUBLIC",
-            "type": "PolicyExposure",
-            "details": {
-              "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
-              "endpoint": "payment:b6224b0f0b8685e70a3ba99d1f9ba060"
-            }
-          }
-        ],
-        "policy_inconsistency_roles": [
-          "PUBLIC"
+        "allowed_roles": [
+          "SUPER-ADMIN",
+          "ADMIN",
+          "CUSTOMER",
+          "USER"
         ]
       }
     },
@@ -13318,14 +13300,6 @@
         "role": "PUBLIC",
         "type": "PolicyExposure",
         "details": {
-          "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
-          "endpoint": "payment:06cd8850acd594321c4c7f15dc8e6187"
-        }
-      },
-      {
-        "role": "PUBLIC",
-        "type": "PolicyExposure",
-        "details": {
           "reason": "Sensitive endpoint marked as PUBLIC (-1)"
         }
       }
@@ -13348,7 +13322,7 @@
       "roles_unknown_at_boundary": [],
       "guidance": "Treat the unresolved downstream nodes as a single black box. Generate tests targeting the boundary endpoint with every role to observe responses; a divergence from the boundary's expected outcome indicates an inconsistency inside the black box. Roles denied at the boundary cannot be resolved statically."
     },
-    "expected_outcome": "Detect and explain inconsistency in downstream authorization policies",
+    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
     "scenario_category": "DOWNSTREAM_POLICY_EXPOSURE_FINANCIAL_PUBLIC",
     "authorization": {
       "required_roles": [
@@ -13416,14 +13390,6 @@
         "max_depth": 1,
         "total_calls": 2,
         "policy_inconsistencies": [
-          {
-            "role": "PUBLIC",
-            "type": "PolicyExposure",
-            "details": {
-              "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
-              "endpoint": "payment:06cd8850acd594321c4c7f15dc8e6187"
-            }
-          },
           {
             "role": "PUBLIC",
             "type": "PolicyExposure",
@@ -26681,22 +26647,11 @@
     },
     "max_depth": 0,
     "total_calls": 1,
-    "policy_inconsistencies": [
-      {
-        "role": "PUBLIC",
-        "type": "PolicyExposure",
-        "details": {
-          "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
-          "endpoint": "payment:943c6de8bc82da76a6f162f8c6173b3c"
-        }
-      }
-    ],
-    "policy_inconsistency_roles": [
-      "PUBLIC"
-    ],
+    "policy_inconsistencies": [],
+    "policy_inconsistency_roles": [],
     "unresolved_boundary": {},
-    "expected_outcome": "Detect and explain entry-point authorization or exposure issue",
-    "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PUBLIC_PUBLIC",
+    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
+    "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
       "required_roles": [
         "SUPER-ADMIN",
@@ -26743,7 +26698,7 @@
     "data_awareness_level": "LOW",
     "llm_prompt_type": "SIMPLE",
     "sensitivity_type": "PUBLIC",
-    "prompt_template_id": "entrypoint_public_sensitive",
+    "prompt_template_id": "entrypoint_status_matrix",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -26751,36 +26706,26 @@
       ],
       "prompt_type": "SIMPLE",
       "sensitivity": "PUBLIC",
-      "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PUBLIC_PUBLIC",
-      "template_id": "entrypoint_public_sensitive",
+      "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
+      "template_id": "entrypoint_status_matrix",
       "parameters": {
         "scenario_id": "scn_payment:943c6de8bc82da76a6f162f8c6173b3c",
         "endpoint": "/init",
         "method": "POST",
         "service_name": "payment",
-        "sensitivity_type": "PUBLIC",
-        "authorization": {
-          "required_roles": [
-            "SUPER-ADMIN",
-            "ADMIN",
-            "CUSTOMER",
-            "USER"
-          ],
-          "source": "default",
-          "priority": null,
-          "scope_pattern": null,
-          "public": true
-        },
-        "policy_inconsistencies": [
-          {
-            "role": "PUBLIC",
-            "type": "PolicyExposure",
-            "details": {
-              "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
-              "endpoint": "payment:943c6de8bc82da76a6f162f8c6173b3c"
-            }
-          }
-        ]
+        "allowed_roles": [
+          "SUPER-ADMIN",
+          "ADMIN",
+          "CUSTOMER",
+          "USER"
+        ],
+        "denied_roles": [],
+        "expected_status_by_role": {
+          "SUPER-ADMIN": "2xx",
+          "ADMIN": "2xx",
+          "CUSTOMER": "2xx",
+          "USER": "2xx"
+        }
       }
     },
     "handles_pii": false,
@@ -31147,22 +31092,11 @@
     },
     "max_depth": 0,
     "total_calls": 1,
-    "policy_inconsistencies": [
-      {
-        "role": "PUBLIC",
-        "type": "PolicyExposure",
-        "details": {
-          "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
-          "endpoint": "payment:8ded4d5d19b504265dff07e2fcc2742f"
-        }
-      }
-    ],
-    "policy_inconsistency_roles": [
-      "PUBLIC"
-    ],
+    "policy_inconsistencies": [],
+    "policy_inconsistency_roles": [],
     "unresolved_boundary": {},
-    "expected_outcome": "Detect and explain entry-point authorization or exposure issue",
-    "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PUBLIC_PUBLIC",
+    "expected_outcome": "Return 2xx for allowed roles and 403 for denied roles",
+    "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
     "authorization": {
       "required_roles": [
         "SUPER-ADMIN",
@@ -31209,7 +31143,7 @@
     "data_awareness_level": "LOW",
     "llm_prompt_type": "SIMPLE",
     "sensitivity_type": "PUBLIC",
-    "prompt_template_id": "entrypoint_public_sensitive",
+    "prompt_template_id": "entrypoint_status_matrix",
     "prompt_context": {
       "goals": [
         "Validate role-based access control enforcement.",
@@ -31217,36 +31151,26 @@
       ],
       "prompt_type": "SIMPLE",
       "sensitivity": "PUBLIC",
-      "scenario_category": "ENTRYPOINT_POLICY_EXPOSURE_PUBLIC_PUBLIC",
-      "template_id": "entrypoint_public_sensitive",
+      "scenario_category": "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC",
+      "template_id": "entrypoint_status_matrix",
       "parameters": {
         "scenario_id": "scn_payment:8ded4d5d19b504265dff07e2fcc2742f",
         "endpoint": "/cancel",
         "method": "GET",
         "service_name": "payment",
-        "sensitivity_type": "PUBLIC",
-        "authorization": {
-          "required_roles": [
-            "SUPER-ADMIN",
-            "ADMIN",
-            "CUSTOMER",
-            "USER"
-          ],
-          "source": "default",
-          "priority": null,
-          "scope_pattern": null,
-          "public": true
-        },
-        "policy_inconsistencies": [
-          {
-            "role": "PUBLIC",
-            "type": "PolicyExposure",
-            "details": {
-              "reason": "Sensitive endpoint (FINANCIAL) marked as PUBLIC (-1)",
-              "endpoint": "payment:8ded4d5d19b504265dff07e2fcc2742f"
-            }
-          }
-        ]
+        "allowed_roles": [
+          "SUPER-ADMIN",
+          "ADMIN",
+          "CUSTOMER",
+          "USER"
+        ],
+        "denied_roles": [],
+        "expected_status_by_role": {
+          "SUPER-ADMIN": "2xx",
+          "ADMIN": "2xx",
+          "CUSTOMER": "2xx",
+          "USER": "2xx"
+        }
       }
     },
     "handles_pii": false,

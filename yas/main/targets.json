@@ -1,0 +1,12 @@
+[
+  {"method": "GET",    "uri": "/backoffice/ratings/latest/{count}"},
+  {"method": "GET",    "uri": "/storefront/customer/profile"},
+  {"method": "GET",    "uri": "/storefront/cart/items"},
+  {"method": "POST",   "uri": "/backoffice/products"},
+  {"method": "POST",   "uri": "/storefront/ratings"},
+  {"method": "POST",   "uri": "/storefront/sampledata"},
+  {"method": "DELETE", "uri": "/backoffice/ratings/{id}"},
+  {"method": "DELETE", "uri": "/backoffice/warehouses/{id}"},
+  {"method": "PUT",    "uri": "/backoffice/products/subtract-quantity"},
+  {"method": "PUT",    "uri": "/backoffice/state-or-provinces/{id}"}
+]

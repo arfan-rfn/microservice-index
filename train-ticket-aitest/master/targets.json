@@ -1,0 +1,12 @@
+[
+  {"method": "GET",    "uri": "/api/v1/userservice/users"},
+  {"method": "GET",    "uri": "/api/v1/orderservice/order/orderPay/{orderId}"},
+  {"method": "GET",    "uri": "/api/v1/configservice/welcome"},
+  {"method": "POST",   "uri": "/api/v1/userservice/users/register"},
+  {"method": "POST",   "uri": "/api/v1/adminrouteservice/adminroute"},
+  {"method": "POST",   "uri": "/api/v1/adminbasicservice/adminbasic/configs"},
+  {"method": "PUT",    "uri": "/api/v1/admintravelservice/admintravel"},
+  {"method": "PUT",    "uri": "/api/v1/adminbasicservice/adminbasic/contacts"},
+  {"method": "DELETE", "uri": "/api/v1/userservice/users/{userId}"},
+  {"method": "DELETE", "uri": "/api/v1/adminbasicservice/adminbasic/prices/{pricesId}"}
+]

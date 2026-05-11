@@ -26,6 +26,7 @@ preventing privilege escalation or inconsistent access control.
 import json
 import argparse
 from collections import Counter
+import logging
 from pathlib import Path
 from typing import Dict, List, Any, Tuple
 from ir_feature_extractor import analyze_ir_node
@@ -351,27 +352,13 @@ def summarize_permissions(pm: Dict[str, Any], endpoint_id: str) -> Dict[str, Any
         expected_status_by_role = row_summary["expected_status_by_role"]
         is_public_endpoint = row_summary["is_public_endpoint"]
 
-        # Sensitivity detection (based on endpoint name)
-        eid_lower = endpoint_id.lower()
-        if any(k in eid_lower for k in ["pay", "refund", "payment", "transaction"]):
-            sensitivity_type = "FINANCIAL"
-        elif any(k in eid_lower for k in ["user", "profile", "personal", "account"]):
-            sensitivity_type = "PII"
-        elif any(k in eid_lower for k in ["admin", "config", "manage", "report"]):
-            sensitivity_type = "INTERNAL"
-        else:
-            sensitivity_type = "PUBLIC"
-
-        # Mark inconsistency if a sensitive endpoint is public
-        if is_public_endpoint and sensitivity_type in ["FINANCIAL", "PII", "INTERNAL"]:
-            policy_inconsistencies.append({
-                "role": "PUBLIC",
-                "type": "PolicyExposure",
-                "details": {
-                    "reason": f"Sensitive endpoint ({sensitivity_type}) marked as PUBLIC (-1)",
-                    "endpoint": endpoint_id
-                }
-            })
+        # Sensitivity is inferred from the endpoint URI in `infer_data_and_sensitivity`
+        # (single source of truth). Doing it here against the endpoint_id produced
+        # false positives because endpoint IDs include service names (e.g.
+        # "configservice:<hash>" wrongly matched the INTERNAL keyword "config",
+        # "userservice:<hash>" wrongly matched the PII keyword "user"), generating
+        # stale PolicyExposure inconsistencies for endpoints that are actually
+        # PUBLIC by URI.
 
     return {
         "allowed_roles": allowed,
@@ -1198,85 +1185,90 @@ def main():
     )
     args = parser.parse_args()
 
-    # BASE_PATH = "train-ticket-aitest/first-inconsistency-injection"
-    # BASE_PATH = "train-ticket-aitest/master"
-    # BASE_PATH = "train-ticket-aitest/second-inconsistency-injection"
-    # BASE_PATH = "yas/main"
-    # BASE_PATH = "yas/first-injection"
-    BASE_PATH = "yas/second-injection"
     # BASE_PATH = args.base_path
+    BASE_PATHS = [
+        "train-ticket-aitest/first-inconsistency-injection",
+        "train-ticket-aitest/master",
+        "train-ticket-aitest/second-inconsistency-injection",
+        "yas/main",
+        "yas/first-injection",
+        "yas/second-injection"
+    ]
 
-    all_vectors = load_json(f"{BASE_PATH}/all_vectors.json")
-    endpoints = load_json(f"{BASE_PATH}/endpoints.json")
-    components = load_json(f"{BASE_PATH}/components.json")
+    for BASE_PATH in BASE_PATHS:
+        logging.info(f"Generating scenarios for {BASE_PATH}")
 
-    base_scenarios = generate_scenarios(all_vectors)
-    enriched_scenarios = []
+        all_vectors = load_json(f"{BASE_PATH}/all_vectors.json")
+        endpoints = load_json(f"{BASE_PATH}/endpoints.json")
+        components = load_json(f"{BASE_PATH}/components.json")
 
-    for s in base_scenarios:
-        s["authorization"] = {"required_roles": s.get("allowed_roles", [])}
-        s = enrich_from_endpoints(s, endpoints)
-        s = enrich_from_components(s, components)
-        s = enrich_entity_schema_from_components(s, components)
-        s = infer_data_and_sensitivity(s)
-        s["policy_inconsistencies"] = dedupe_policy_inconsistencies(s.get("policy_inconsistencies", []))
-        s["policy_inconsistency_roles"] = extract_policy_inconsistency_roles(s.get("policy_inconsistencies", []))
+        base_scenarios = generate_scenarios(all_vectors)
+        enriched_scenarios = []
 
-        # Now that sensitivity and exposure (public vs restricted) are known,
-        # derive a high-level theoretical scenario category.
-        s["scenario_category"] = categorize_scenario(
-            s.get("type"),
-            s.get("policy_inconsistencies", []),
-            s.get("sensitivity_type"),
-            s.get("authorization", {}).get("public", False),
+        for s in base_scenarios:
+            s["authorization"] = {"required_roles": s.get("allowed_roles", [])}
+            s = enrich_from_endpoints(s, endpoints)
+            s = enrich_from_components(s, components)
+            s = enrich_entity_schema_from_components(s, components)
+            s = infer_data_and_sensitivity(s)
+            s["policy_inconsistencies"] = dedupe_policy_inconsistencies(s.get("policy_inconsistencies", []))
+            s["policy_inconsistency_roles"] = extract_policy_inconsistency_roles(s.get("policy_inconsistencies", []))
+
+            # Now that sensitivity and exposure (public vs restricted) are known,
+            # derive a high-level theoretical scenario category.
+            s["scenario_category"] = categorize_scenario(
+                s.get("type"),
+                s.get("policy_inconsistencies", []),
+                s.get("sensitivity_type"),
+                s.get("authorization", {}).get("public", False),
+            )
+
+            # Select a concrete prompt template class for this scenario.
+            s["prompt_template_id"] = select_prompt_template_id(s)
+
+            s = build_prompt_context(s)
+            
+            ir_features = analyze_ir_node(s)
+            s.update({
+                "handles_pii": ir_features["handles_pii"],
+                "pii_evidence": ir_features["pii_evidence"],
+                "business_logic_constraints": ir_features["business_logic_constraints"]
+            })
+            enriched_scenarios.append(s)
+
+        if args.list_templates:
+            templates = sorted({s.get("prompt_template_id", "") for s in enriched_scenarios})
+            print("Available prompt_template_id values:")
+            for t in templates:
+                if t:
+                    print(f"- {t}")
+
+        # Optional filtering by template_id for Test Generator integration.
+        if args.template_id:
+            enriched_scenarios = [
+                s for s in enriched_scenarios
+                if s.get("prompt_template_id") == args.template_id
+            ]
+
+        if args.output_path:
+            output_path = Path(args.output_path)
+        else:
+            output_path = f"{BASE_PATH}/scenarios_llm_ready.json"
+
+        audit_report = build_generation_audit_report(enriched_scenarios)
+
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(enriched_scenarios, f, indent=2, ensure_ascii=False)
+        if args.audit_report_path:
+            with open(args.audit_report_path, "w", encoding="utf-8") as f:
+                json.dump(audit_report, f, indent=2, ensure_ascii=False)
+            print(f"📊 Generation audit report saved to {args.audit_report_path}")
+        print(
+            "📈 Generation summary: "
+            f"types={audit_report['scenarios_per_type']} "
+            f"missing_role_coverage={audit_report['missing_role_coverage_count']}"
         )
-
-        # Select a concrete prompt template class for this scenario.
-        s["prompt_template_id"] = select_prompt_template_id(s)
-
-        s = build_prompt_context(s)
-        
-        ir_features = analyze_ir_node(s)
-        s.update({
-            "handles_pii": ir_features["handles_pii"],
-            "pii_evidence": ir_features["pii_evidence"],
-            "business_logic_constraints": ir_features["business_logic_constraints"]
-        })
-        enriched_scenarios.append(s)
-
-    if args.list_templates:
-        templates = sorted({s.get("prompt_template_id", "") for s in enriched_scenarios})
-        print("Available prompt_template_id values:")
-        for t in templates:
-            if t:
-                print(f"- {t}")
-
-    # Optional filtering by template_id for Test Generator integration.
-    if args.template_id:
-        enriched_scenarios = [
-            s for s in enriched_scenarios
-            if s.get("prompt_template_id") == args.template_id
-        ]
-
-    if args.output_path:
-        output_path = Path(args.output_path)
-    else:
-        output_path = f"{BASE_PATH}/scenarios_llm_ready.json"
-
-    audit_report = build_generation_audit_report(enriched_scenarios)
-
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(enriched_scenarios, f, indent=2, ensure_ascii=False)
-    if args.audit_report_path:
-        with open(args.audit_report_path, "w", encoding="utf-8") as f:
-            json.dump(audit_report, f, indent=2, ensure_ascii=False)
-        print(f"📊 Generation audit report saved to {args.audit_report_path}")
-    print(
-        "📈 Generation summary: "
-        f"types={audit_report['scenarios_per_type']} "
-        f"missing_role_coverage={audit_report['missing_role_coverage_count']}"
-    )
-    print(f"✅ LLM-ready scenarios saved to {output_path} ({len(enriched_scenarios)} entries)")
+        print(f"✅ LLM-ready scenarios saved to {output_path} ({len(enriched_scenarios)} entries)")
 
 
 if __name__ == "__main__":

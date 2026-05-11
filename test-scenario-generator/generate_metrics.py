@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 from typing import Dict, List, Tuple, Set, Any, Optional
 
@@ -468,29 +469,57 @@ def compute_target_metrics(
                         if per_role_ok.get(r, False):
                             correct_role += 1
 
-    # Correct Parameter Specification (per scenario)
+    # Correct Parameter Specification (two independent cases per matched scenario).
+    #
+    # Parameter specification has two distinct dimensions that should be
+    # evaluated independently; collapsing them into a single boolean hides
+    # failures and artificially caps Total Cases at len(matched). Each matched
+    # scenario therefore contributes two cases:
+    #
+    #   Case A — Path parameter specification:
+    #       every path parameter declared on the endpoint is also declared on
+    #       the scenario (by name). Endpoints with no path parameters pass
+    #       trivially.
+    #
+    #   Case B — Request body specification:
+    #       when the endpoint declares a body type, the scenario must declare a
+    #       matching request_body_type or entity_schema.entity_name. When the
+    #       endpoint has no body, the scenario must not declare one either.
+    #
+    # With this split, Total Cases == 2 * len(matched), so a single matched
+    # scenario already yields Total Cases >= 2.
     correct_param = 0
     total_param = 0
     if endpoint_obj:
-        for s in matched:
-            ep_body = endpoint_obj.get("requestBodyDetail", {}) or {}
-            ep_body_type = ep_body.get("type", "")
-            ep_path_params = endpoint_obj.get("pathParameterDetails", []) or []
+        ep_body = endpoint_obj.get("requestBodyDetail", {}) or {}
+        ep_body_type = ep_body.get("type", "") or ""
+        ep_path_params = endpoint_obj.get("pathParameterDetails", []) or []
+        ep_path_param_names = {
+            pp.get("name", "") for pp in ep_path_params if pp.get("name")
+        }
 
-            ok = True
-            for pp in ep_path_params:
-                if pp.get("name"):
-                    s_pp = s.get("pathParameterDetails", []) or []
-                    if pp["name"] not in {p.get("name", "") for p in s_pp}:
-                        ok = False
-                        break
-            if ok and ep_body_type:
-                s_body = s.get("data", {}).get("request_body_type", "")
-                s_entity = (s.get("entity_schema", {}) or {}).get("entity_name", "")
-                if s_body != ep_body_type and s_entity != ep_body_type:
-                    ok = False
+        for s in matched:
+            # Case A: path parameter specification
+            s_pp_names = {
+                p.get("name", "")
+                for p in (s.get("pathParameterDetails", []) or [])
+                if isinstance(p, dict)
+            }
+            path_ok = ep_path_param_names.issubset(s_pp_names)
             total_param += 1
-            if ok:
+            if path_ok:
+                correct_param += 1
+
+            # Case B: request body specification
+            s_body = (s.get("data", {}) or {}).get("request_body_type", "") or ""
+            s_entity = (s.get("entity_schema", {}) or {}).get("entity_name", "") or ""
+            if ep_body_type:
+                body_ok = (s_body == ep_body_type) or (s_entity == ep_body_type)
+            else:
+                # Endpoint expects no body; scenario must not claim one either.
+                body_ok = not s_body and not s_entity
+            total_param += 1
+            if body_ok:
                 correct_param += 1
 
     # Confusion Matrix (template convention) computed PER DOWNSTREAM SCENARIO.
@@ -844,32 +873,112 @@ def write_excel(out_path: str, target_rows: List[dict], rq3: dict) -> None:
 # Main
 # ---------------------------------------------------------------------------
 
-TARGETS: List[Tuple[str, str]] = [
-    ("GET", "/backoffice/ratings/latest/{count}"),
-    ("GET", "/storefront/customer/profile"),
-    ("GET", "/storefront/cart/items"),
-    ("POST", "/backoffice/products"),
-    ("POST", "/storefront/ratings"),
-    ("POST", "/storefront/sampledata"),
-    ("DELETE", "/backoffice/ratings/{id}"),
-    ("DELETE", "/backoffice/warehouses/{id}"),
-    ("PUT", "/backoffice/products/subtract-quantity"),
-    ("PUT", "/backoffice/state-or-provinces/{id}"),
+# Default YAS target list, kept for backwards compatibility when no
+# `--targets` file is provided AND no `targets.json` sits next to the dataset.
+# DEFAULT_TARGETS: List[Tuple[str, str]] = [
+#     ("GET", "/backoffice/ratings/latest/{count}"),
+#     ("GET", "/storefront/customer/profile"),
+#     ("GET", "/storefront/cart/items"),
+#     ("POST", "/backoffice/products"),
+#     ("POST", "/storefront/ratings"),
+#     ("POST", "/storefront/sampledata"),
+#     ("DELETE", "/backoffice/ratings/{id}"),
+#     ("DELETE", "/backoffice/warehouses/{id}"),
+#     ("PUT", "/backoffice/products/subtract-quantity"),
+#     ("PUT", "/backoffice/state-or-provinces/{id}"),
+# ]
+
+DEFAULT_TARGETS: List[Tuple[str, str]] = [
+    ("GET", "/api/v1/contactservice/contacts"),
+    ("GET", "/api/v1/adminbasicservice/adminbasic/prices"),
+    ("GET", "/api/v1/cancelservice/cancel/{?}/{?}"),
+    ("POST", "/api/v1/inside_pay_service/inside_payment/account"),
+    ("POST", "/api/v1/adminbasicservice/adminbasic/prices"),
+    ("POST", "/api/v1/preserveservice/preserve"),
+    ("DELETE", "/api/v1/contactservice/contacts/{?}"),
+    ("DELETE", "/api/v1/adminbasicservice/adminbasic/stations/{?}"),
+    ("DELETE", "/api/v1/adminorderservice/adminorder/{?}/{?}"),
+    ("PUT", "/api/v1/orderservice/order"),
+    ("PUT", "/api/v1/adminuserservice/users"),
+    ("PUT", "/api/v1/adminorderservice/adminorder"),
+    ("PATCH", "/api/v1/assuranceservice/assurances/{?}/{?}/{?}"),
 ]
+
+# Backwards-compatible alias so external imports keep working.
+TARGETS: List[Tuple[str, str]] = DEFAULT_TARGETS
+
+
+def load_targets(
+    targets_path: Optional[str],
+    scenarios_path: str,
+) -> Tuple[List[Tuple[str, str]], str]:
+    """Resolve the target list for the current run.
+
+    Resolution order (first hit wins):
+      1. Explicit ``--targets`` JSON file when provided on the CLI.
+      2. The in-code ``DEFAULT_TARGETS`` constant (authoritative default).
+
+    ``DEFAULT_TARGETS`` is preserved exactly as declared — same entries and
+    same order — so editing the Python constant directly is enough to change
+    which targets show up in the metrics workbook.
+
+    Returns (targets, source_label) for diagnostic output.
+    """
+    if targets_path:
+        if os.path.isfile(targets_path):
+            with open(targets_path, "r", encoding="utf-8") as f:
+                raw = json.load(f)
+            targets: List[Tuple[str, str]] = []
+            for entry in raw:
+                if isinstance(entry, dict):
+                    method = entry.get("method", "")
+                    uri = entry.get("uri") or entry.get("path") or ""
+                elif isinstance(entry, (list, tuple)) and len(entry) >= 2:
+                    method, uri = entry[0], entry[1]
+                else:
+                    continue
+                method = _normalize_method(str(method))
+                uri = _normalize_path(str(uri))
+                if method and uri:
+                    targets.append((method, uri))
+            if targets:
+                return targets, f"--targets ({targets_path})"
+
+    # Normalize DEFAULT_TARGETS the same way so user-declared paths round-trip
+    # through _normalize_path (e.g. adds a leading slash if missing) while
+    # preserving declaration order.
+    normalized: List[Tuple[str, str]] = []
+    for method, uri in DEFAULT_TARGETS:
+        normalized.append((_normalize_method(method), _normalize_path(uri)))
+    return normalized, "DEFAULT_TARGETS (in-code)"
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Generate scenario generator evaluation metrics")
-    # round_base = "train-ticket-aitest/master"
+    round_base = "train-ticket-aitest/master"
     # round_base = "train-ticket-aitest/first-inconsistency-injection/"
     # round_base = "train-ticket-aitest/second-inconsistency-injection/"
     # round_base = "yas/main"
     # round_base = "yas/first-injection"
-    round_base = "yas/second-injection/"
+    # round_base = "yas/second-injection/"
+    # Normalized slug derived from round_base ("yas/main" -> "yas_main"),
+    # used in the metrics filename so each dataset writes a uniquely-named
+    # workbook instead of overwriting a generic "metrics.xlsx".
+    round_slug = re.sub(r"_+", "_", round_base.strip("/").replace("/", "_"))
     ap.add_argument("--scenarios", default=f"{round_base}/scenarios_llm_ready.json")
     ap.add_argument("--endpoints", default=f"{round_base}/endpoints.json")
     ap.add_argument("--vectors", default=f"{round_base}/all_vectors.json")
-    ap.add_argument("--out", default=f"{round_base}/output/metrics.xlsx")
+    ap.add_argument("--out", default=f"{round_base}/output/metrics_{round_slug}.xlsx")
+    ap.add_argument(
+        "--targets",
+        default=None,
+        help=(
+            "Optional path to a JSON file with the target endpoint list. "
+            "Accepts either [{\"method\": ..., \"uri\": ...}, ...] or [[method, uri], ...]. "
+            "When omitted, the in-code DEFAULT_TARGETS constant is used as-is, "
+            "preserving declaration order."
+        ),
+    )
     args = ap.parse_args()
 
     scenarios = load_json(args.scenarios)
@@ -877,14 +986,15 @@ def main() -> None:
     vectors_json = load_json(args.vectors)
 
     all_roles = get_roles_universe(vectors_json)
+    targets, targets_source = load_targets(args.targets, args.scenarios)
 
     print(f"Total scenarios: {len(scenarios)}")
     print(f"Roles: {all_roles}")
-    print(f"Targets: {len(TARGETS)}")
+    print(f"Targets: {len(targets)}  (source: {targets_source})")
 
     target_rows: List[dict] = []
     warnings: List[str] = []
-    for method, uri in TARGETS:
+    for method, uri in targets:
         row = compute_target_metrics(method, uri, scenarios, endpoints_json,
                                       vectors_json, all_roles)
         target_rows.append(row)

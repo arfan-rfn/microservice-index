@@ -1,0 +1,53 @@
+{
+  "total_scenarios": 194,
+  "scenarios_per_type": {
+    "EntryPointAuthorization": 122,
+    "DownstreamPolicyConsistency": 72
+  },
+  "scenarios_per_category": {
+    "ENTRYPOINT_CONSISTENT_PUBLIC_RESTRICTED": 83,
+    "DOWNSTREAM_OVER_PERMISSIVE_PUBLIC_RESTRICTED": 33,
+    "ENTRYPOINT_CONSISTENT_PUBLIC_PUBLIC": 32,
+    "DOWNSTREAM_CONSISTENT_PUBLIC_PUBLIC": 22,
+    "DOWNSTREAM_UNDER_PERMISSIVE_PUBLIC_PUBLIC": 4,
+    "DOWNSTREAM_POLICY_EXPOSURE_PII_PUBLIC": 4,
+    "DOWNSTREAM_ROLE_MISMATCH_PUBLIC_RESTRICTED": 3,
+    "ENTRYPOINT_CONSISTENT_PII_RESTRICTED": 2,
+    "DOWNSTREAM_CONSISTENT_PUBLIC_RESTRICTED": 2,
+    "ENTRYPOINT_CONSISTENT_FINANCIAL_RESTRICTED": 2,
+    "DOWNSTREAM_ROLE_MISMATCH_PII_RESTRICTED": 2,
+    "ENTRYPOINT_POLICY_EXPOSURE_PII_PUBLIC": 2,
+    "DOWNSTREAM_POLICY_EXPOSURE_FINANCIAL_PUBLIC": 1,
+    "ENTRYPOINT_POLICY_EXPOSURE_FINANCIAL_PUBLIC": 1,
+    "DOWNSTREAM_CONSISTENT_PII_RESTRICTED": 1
+  },
+  "scenarios_per_prompt_template": {
+    "entrypoint_status_matrix": 119,
+    "downstream_inconsistency_cot": 47,
+    "downstream_consistent_path": 25,
+    "entrypoint_public_sensitive": 3
+  },
+  "scenarios_per_depth": {
+    "0": 122,
+    "1": 19,
+    "2": 19,
+    "3": 31,
+    "4": 3
+  },
+  "scenarios_per_total_calls": {
+    "1": 122,
+    "2": 10,
+    "3": 24,
+    "4": 32,
+    "5": 4,
+    "6": 2
+  },
+  "policy_inconsistency_types": {
+    "OverPermissiveDownstream": 86,
+    "PolicyExposure": 8,
+    "UnderPermissiveDownstream": 7,
+    "UnresolvedDownstream": 5
+  },
+  "missing_role_coverage_count": 0,
+  "missing_role_coverage_examples": []
+}
